@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import Aura from '@primeuix/themes/aura';
 export default defineNuxtConfig({
-  modules: ['@primevue/nuxt-module', '@nuxtjs/tailwindcss'],
+  modules: ['@primevue/nuxt-module', '@nuxtjs/tailwindcss', 'shadcn-nuxt'],
   compatibilityDate: '2024-11-01',
   devtools: {
     enabled: true,
@@ -20,4 +20,8 @@ export default defineNuxtConfig({
     },
   },
   css: ['primeicons/primeicons.css'],
+  shadcn: {
+    prefix: '',
+    componentDir: './components/ui',
+  },
 });

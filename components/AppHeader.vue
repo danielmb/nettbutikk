@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { MenuItem } from 'primevue/menuitem';
 import { ref } from 'vue';
 
 const toast = useToast();
@@ -21,19 +22,12 @@ const mainCategory = ref([
     // icon: 'pi pi-fw pi-user',
   },
 ]);
-
-const subCategory = ref([
-  {
-    label: 'Shirts',
-    route: 'shirts',
-  },
-]);
 </script>
 <template>
   <div class="card">
     <Menubar
       :model="mainCategory"
-      class="container mx-auto px-4 sm:px-6 lg:px-8"
+      class="container mx-auto px-4 sm:px-6 lg:px-8 hidden sm:flex"
     >
       <template #start>
         <svg
@@ -125,7 +119,5 @@ const subCategory = ref([
         </div>
       </template>
     </Menubar>
-
-    <Menubar> </Menubar>
   </div>
 </template>

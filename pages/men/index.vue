@@ -1,3 +1,13 @@
+<script lang="ts" setup>
+import { ref } from 'vue';
+
+const items = ref([
+  { label: 'New Arrivals' },
+  { label: 'Clothing' },
+  { label: 'Shoes' },
+  { label: 'Accessories' },
+]);
+</script>
 <template>
-  <div>mens clothing</div>
+  <UserMegaMenu subCategory="subCategory" :items="items" />
 </template>
