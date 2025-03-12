@@ -10,4 +10,5 @@ const items = ref([
 </script>
 <template>
   <UserMegaMenu subCategory="subCategory" :items="items" />
+  <Clothes mainCategory="men" />
 </template>
