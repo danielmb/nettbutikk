@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const { data } = await useFetch('/api/hello');
-const value = ref('');
+import superjson from 'superjson';
+
 </script>
 
 <template>

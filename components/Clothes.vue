@@ -16,7 +16,6 @@ const props = defineProps<{
 const {
   data: items,
 } = await useFetch('/api/items', { query: { category: props.mainCategory } });
-
 const currency = useCurrencyStore();
 currency.setCurrency('USD');
 await currency.fetchExchangeRates();

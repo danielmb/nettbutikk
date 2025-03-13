@@ -1,5 +1,5 @@
 import { prisma } from '~/lib/db';
-
+import superjson from 'superjson';
 export default defineEventHandler(async (event) => {
   // You can access query parameters
   const query = getQuery(event);
@@ -39,6 +39,5 @@ export default defineEventHandler(async (event) => {
   // ];
 
   const items = await prisma.item.findMany();
-
   return items;
 });

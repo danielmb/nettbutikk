@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import type { Item } from '@prisma/client'
+import type { SerializeObject } from '#app/types'
 const props = defineProps<{
   // item: {
   //   id: number;
@@ -19,7 +20,7 @@ const props = defineProps<{
   //   price: number;
   //   stock: number;
   // }
-  item: SerializeObject
+  item: SerializeObject<Item>;
 }>();
 
 const item = ref(props.item);
