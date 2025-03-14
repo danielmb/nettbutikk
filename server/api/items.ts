@@ -1,8 +1,7 @@
 import { prisma } from '~/lib/db';
-import superjson from 'superjson';
+
 export default defineEventHandler(async (event) => {
   // You can access query parameters
-  const query = getQuery(event);
 
   // You can access request body for POST/PUT requests
   // const body = await readBody(event)

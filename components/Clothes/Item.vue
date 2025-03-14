@@ -10,16 +10,8 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import type { Item } from '@prisma/client'
-import type { SerializeObject } from '#app/types'
+import type { SerializeObject } from 'nitropack';
 const props = defineProps<{
-  // item: {
-  //   id: number;
-  //   title: string;
-  //   description: string;
-  //   image: string;
-  //   price: number;
-  //   stock: number;
-  // }
   item: SerializeObject<Item>;
 }>();
 
@@ -32,11 +24,14 @@ const item = ref(props.item);
 const currency = useCurrencyStore();
 currency.setCurrency('USD');
 await currency.fetchExchangeRates();
+const { isFavorited, toggleFavorite, favorites } = useFavoritesStore()
+const favorite = computed(() => isFavorited(item.value.id))
 </script>
 
 
 <template>
   <div class="w-full relative">
+
     <a :href="`/item/${item.id}`">
       <Card class="w-[300px] border-none rounded-none shadow-none">
         <CardContent class="flex flex-col items-center">
@@ -60,8 +55,10 @@ await currency.fetchExchangeRates();
       </Card>
     </a>
     <!-- favorite -->
-    <Button class="absolute bottom-24 right-0 w-2" variant="ghost">
-      <div class="pi pi-heart"></div>
+    <Button class="absolute bottom-24 right-0 w-2" variant="ghost" @click="toggleFavorite(item.id)">
+
+      <!-- <div class="pi pi-heart"></div> -->
+      <div class="pi" :class="{ 'pi-heart-fill': favorite, 'pi-heart': !favorite }"></div>
     </Button>
   </div>
 </template>

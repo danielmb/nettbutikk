@@ -9,6 +9,8 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    '@sidebase/nuxt-auth',
+    'nuxt-auth-utils',
   ],
   compatibilityDate: '2024-11-01',
   devtools: {
@@ -31,5 +33,12 @@ export default defineNuxtConfig({
   shadcn: {
     prefix: '',
     componentDir: './components/ui',
+  },
+  auth: {
+    isEnabled: true,
+    baseURL: process.env.AUTH_ORIGIN,
+    provider: {
+      type: 'authjs',
+    },
   },
 });

@@ -24,7 +24,7 @@ await currency.fetchExchangeRates();
 
 <template>
   <div class="grid grid-cols-4 w-fit gap-2">
-    <ClothesItem :item="item" v-for="item in items" :key="item.id" />
+    <ClothesItem v-if="items" :item="{ ...item }" v-for="item in items" :key="item.id" />
 
   </div>
 </template>

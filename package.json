@@ -2,7 +2,9 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.6.3",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
@@ -11,15 +13,20 @@
     "prisma:db:seed": "prisma db seed"
   },
   "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/tailwindcss": "^6.13.1",
     "@pinia/nuxt": "^0.10.1",
     "@primeuix/themes": "^1.0.0",
     "@prisma/client": "^6.5.0",
+    "@sidebase/nuxt-auth": "^0.10.1",
     "@tanstack/vue-table": "^8.21.2",
+    "@vueuse/core": "^13.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^0.479.0",
+    "next-auth": "^4.21.1",
     "nuxt": "^3.16.0",
+    "nuxt-auth-utils": "^0.5.16",
     "pinia": "^3.0.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.3.1",
@@ -35,6 +42,7 @@
   "devDependencies": {
     "@primevue/nuxt-module": "^4.3.1",
     "autoprefixer": "^10.4.21",
+    "only-allow": "^1.2.1",
     "postcss": "^8.5.3",
     "prisma": "^6.5.0",
     "tailwindcss": "^3.4.17",

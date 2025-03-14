@@ -19,7 +19,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
-const toast = useToast();
 const router = useRouter();
 const currentPage = computed(() => router.currentRoute.value.path);
 const mainCategory = ref([
