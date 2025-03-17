@@ -123,6 +123,7 @@ const mainCategory = ref([
           </NavigationMenuList>
         </NavigationMenu>
         <CurrencySelector />
+        <AppHeaderUser />
       </div>
 
     </div>

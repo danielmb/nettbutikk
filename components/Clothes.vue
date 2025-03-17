@@ -9,22 +9,67 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger, } from './ui/select';
+import type { AttributeType } from '@prisma/client';
 const props = defineProps<{
   mainCategory: string;
 }>();
 
+
 const {
-  data: items,
-} = await useFetch('/api/items', { query: { category: props.mainCategory } });
+  products,
+  filters,
+  activeFilters,
+  loading,
+  pagination,
+  toggleFilter,
+} = useProducts()
+
+
 const currency = useCurrencyStore();
 currency.setCurrency('USD');
 await currency.fetchExchangeRates();
+
+
+
+
+
 </script>
 
 
 <template>
-  <div class="grid grid-cols-4 w-fit gap-2">
-    <ClothesItem v-if="items" :item="{ ...item }" v-for="item in items" :key="item.id" />
+  <pre>
+    {{ activeFilters }}
+  </pre>
+  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col">
+    <div>
+      <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
+        :active-filters="activeFilters" />
+    </div>
 
+    <div class="flex flex-col items-center justify-center">
+
+      <h1 class=" text-2xl font-bold mb-4">{{ mainCategory }}</h1>
+      <!-- Category description -->
+      <p class="text-center text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+        eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+    <!-- Filters -->
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+    </div>
+
+    <div class="grid grid-cols-4 w-fit gap-2">
+      <div v-if="loading" class="w-full flex justify-center items-center">
+        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900">
+          <div class="pi pi-spinner"></div>
+        </div>
+      </div>
+      <div v-else-if="!products?.length" class="w-full flex justify-center items-center">
+        <p>No items found</p>
+      </div>
+      <ClothesItem v-else :item="{ ...item }" v-for="item in products" :key="item.id" />
+    </div>
   </div>
+
 </template>

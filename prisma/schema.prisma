@@ -13,7 +13,6 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-// clothes
 model Item {
   id          Int      @id @default(autoincrement())
   name        String
@@ -22,15 +21,53 @@ model Item {
   image       String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  users       User[]
+
+
+
+  // Eav model
+  attributes  ItemAttributeValue[]
+
 }
 
-// users
+model AttributeType {
+  id          Int         @id @default(autoincrement())
+  name        String      // e.g., "brand", "size", "color"
+  slug        String      @unique // URL-friendly identifier
+  filterable  Boolean     @default(true) // Should this be shown in filters?
+  sortOrder   Int         @default(0) // Display order in filter UI
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  values      AttributeValue[]
+}
+
+model AttributeValue {
+  id            Int         @id @default(autoincrement())
+  value         String      // e.g., "Olympus", "XL", "Red"
+  displayName   String      // Formatted name for display
+  attributeType AttributeType @relation(fields: [attributeTypeId], references: [id])
+  attributeTypeId Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         ItemAttributeValue[]
+}
+
+model ItemAttributeValue {
+  item            Item        @relation(fields: [itemId], references: [id])
+  itemId          Int
+  attributeValue  AttributeValue @relation(fields: [attributeValueId], references: [id])
+  attributeValueId Int
+
+  @@id([itemId, attributeValueId])
+}
+
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
+  id        String      @id @unique @default(uuid())
+  email     String   @unique 
   password  String
   name      String
+  favorites Item[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

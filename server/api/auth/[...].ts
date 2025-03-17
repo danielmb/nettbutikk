@@ -1,11 +1,33 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
+//@ts-ignore - Idk
 import { NuxtAuthHandler } from '#auth';
 import { prisma } from '~/lib/db';
 
 export default NuxtAuthHandler({
   // TODO: SET A STRONG SECRET, SEE https://sidebase.io/nuxt-auth/configuration/nuxt-auth-handler#secret
   secret: process.env.AUTH_SECRET || 'my-auth-secret',
+  callbacks: {
+    async session({ session, token, user, newSession, trigger }) {
+      if (token && session.user && typeof token.id === 'string') {
+        session.user.id = token.id;
+      }
+      return session;
+    },
+    async signIn({ user, account, profile, email, credentials }) {
+      return true;
+    },
+    async jwt({ token, user, account, profile, session, trigger }) {
+      if (user) {
+        token.id = user.id;
+      }
+      if (session && user) {
+        session.user = user;
+      }
+
+      return token;
+    },
+  },
   // TODO: ADD YOUR OWN AUTHENTICATION PROVIDER HERE, READ THE DOCS FOR MORE: https://sidebase.io/nuxt-auth
   providers: [
     ((GithubProvider as any).default as typeof GithubProvider)({
@@ -40,6 +62,12 @@ export default NuxtAuthHandler({
           where: {
             email: credentials.username,
           },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            password: true,
+          },
         });
 
         if (!user) {
@@ -52,7 +80,11 @@ export default NuxtAuthHandler({
           return null;
         }
 
-        return user as any;
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        };
         // console.warn(
         //   'ATTENTION: You should replace this with your real providers or credential provider logic! The current setup is not safe',
         // );

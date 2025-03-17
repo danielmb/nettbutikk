@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import Aura from '@primeuix/themes/aura';
+import { promises as fsp } from 'node:fs';
+import { resolve } from 'path';
+
 export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
@@ -10,7 +13,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt',
     '@sidebase/nuxt-auth',
-    'nuxt-auth-utils',
+    './lib/modules/auth-fix.ts',
   ],
   compatibilityDate: '2024-11-01',
   devtools: {
@@ -40,5 +43,8 @@ export default defineNuxtConfig({
     provider: {
       type: 'authjs',
     },
+  },
+  runtimeConfig: {
+    authSecret: process.env.AUTH_SECRET,
   },
 });
