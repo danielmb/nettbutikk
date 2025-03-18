@@ -47,6 +47,7 @@ model AttributeValue {
   id            Int         @id @default(autoincrement())
   value         String      // e.g., "Olympus", "XL", "Red"
   displayName   String      // Formatted name for display
+  description   String?
   sortOrder     Int         @default(0) // Display order in filter UI
   attributeType AttributeType @relation(fields: [attributeTypeId], references: [id])
   attributeTypeId Int

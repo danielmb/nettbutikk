@@ -12,18 +12,6 @@ const items = ref([
 
 
 const route = useRoute();
-// const readableFilter: ReadableFilterInput = {
-//   filters: {
-//     'main': [Array.isArray(route.params.id) ? route.params.id[0] : route.params.id]
-//   },
-// };
-// const { data: defaultFilter } = await useFetch('/api/filter/readable', {
-//   query: readableFilter,
-//   method: 'GET',
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-// });
 
 const id = ref(Number(route.params.id));
 const { data: l } = await useFetch(`/api/filter/slugfromid/${id.value}`);
@@ -38,7 +26,11 @@ const defaultFilter = computed(() => {
   }
 });
 
-console.log(defaultFilter.value);
+const option = computed(() => {
+  if (l.value)
+    return l.value.values.find((v) => v.id === id.value);
+
+});
 
 
 
@@ -49,6 +41,6 @@ console.log(defaultFilter.value);
   <UserMegaMenu subCategory="subCategory" :items="items" />
 
 
-  <Clothes :mainCategory="l?.name ?? ''" :default-filters="defaultFilter?.filters ?? undefined" />
+  <Clothes :mainCategory="option?.displayName ?? ''" :default-filters="defaultFilter?.filters ?? undefined" />
 
 </template>
