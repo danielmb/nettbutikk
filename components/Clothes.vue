@@ -58,7 +58,14 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
 
     </div>
 
+    <div class="flex flex-col items-center justify-center">
 
+      <h1 class=" text-2xl font-bold mb-4">{{ mainCategory }}</h1>
+      <!-- Category description -->
+      <p class="text-center text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+        eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
     <!-- Filters -->
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
       <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
