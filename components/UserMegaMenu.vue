@@ -9,6 +9,10 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 
+
+const { data: clothingOptions } = await useFetch('/api/filter/category')
+
+
 const subCategory = ref<SubCategory[]>([
   {
     label: 'New',
@@ -79,70 +83,38 @@ const subCategory = ref<SubCategory[]>([
     items: [
       [
         {
-          items: [
-            {
-              label: 'T-shirts',
-              route: '/clothing/t-shirts',
-            },
-            {
-              label: 'Hoodies',
-              route: '/clothing/hoodies',
-            },
-            {
-              label: 'Sweatshirts',
-              route: '/clothing/sweatshirts',
-            },
-            {
-              label: 'Jackets',
-            },
-            {
-              label: 'Shirts',
-            },
-            {
-              label: 'Pants',
-            },
-            {
-              label: 'Shorts',
-            },
-            {
-              label: 'Suits',
-            },
-            {
-              label: 'Blazers',
-            },
-            {
-              label: 'Sweaters',
-            },
-            {
-              label: 'Vests',
-            },
-            {
-              label: 'Jeans',
-            },
-          ],
+          // items: [
+
+          // ],
+          items: clothingOptions.value?.values.map((item) => {
+            return {
+              label: item.displayName,
+              route: `/category/${item.id}`,
+            };
+          }) ?? [],
         },
       ],
-      [
-        {
-          items: [
-            {
-              label: 'Underwear',
-            },
-            {
-              label: 'Loungewear',
-            },
-            {
-              label: 'Socks',
-            },
-            {
-              label: 'Big & Tall',
-            },
-            {
-              label: 'Accessories',
-            },
-          ],
-        },
-      ],
+      // [
+      //   {
+      //     items: [
+      //       {
+      //         label: 'Underwear',
+      //       },
+      //       {
+      //         label: 'Loungewear',
+      //       },
+      //       {
+      //         label: 'Socks',
+      //       },
+      //       {
+      //         label: 'Big & Tall',
+      //       },
+      //       {
+      //         label: 'Accessories',
+      //       },
+      //     ],
+      //   },
+      // ],
     ],
   },
 ]);

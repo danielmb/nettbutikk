@@ -1,9 +1,8 @@
 import { prisma } from '~/lib/db';
-
-export default defineEventHandler(async () => {
-  const attributeTypes = await prisma.attributeType.findMany({
-    where: { filterable: true },
-    orderBy: { sortOrder: 'asc' },
+export default defineEventHandler(async (event) => {
+  const { type } = event.context.params!;
+  const attributeType = await prisma.attributeType.findUnique({
+    where: { slug: type },
     include: {
       values: {
         orderBy: { sortOrder: 'asc' },
@@ -16,5 +15,5 @@ export default defineEventHandler(async () => {
     },
   });
 
-  return attributeTypes;
+  return attributeType;
 });

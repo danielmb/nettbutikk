@@ -5,12 +5,15 @@
   "packageManager": "pnpm@10.6.3",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "prebuild": "prisma generate",
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "prisma:db:seed": "prisma db seed"
+    "prisma:db:seed": "prisma db seed",
+    "prisma:db:push": "prisma db push",
+    "setup": "pnpm install && pnpm run prisma:db:push && pnpm run prisma:db:seed"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",

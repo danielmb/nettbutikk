@@ -1,5 +1,9 @@
 import type { InternalApi, SerializeObject } from 'nitropack/types';
-export const useProducts = () => {
+
+export interface UseProductsOptions {
+  staticFilters?: Record<string, number[]>;
+}
+export const useProducts = (options: UseProductsOptions = {}) => {
   const route = useRoute();
   const router = useRouter();
 
@@ -7,7 +11,9 @@ export const useProducts = () => {
     SerializeObject<InternalApi['/api/items']['default']>['products']
   >([]);
   const filters = ref<InternalApi['/api/items/filters']['get']>([]);
-  const activeFilters = ref<Record<string, number[]>>({});
+  const activeFilters = ref<Record<string, number[]>>({
+    ...options.staticFilters,
+  });
   const loading = ref(false);
   const pagination = ref({
     page: 1,
@@ -65,6 +71,20 @@ export const useProducts = () => {
     loadProducts();
   }
 
+  function setFilter(typeSlug: string, valueIds: number[]) {
+    activeFilters.value = {
+      ...activeFilters.value,
+      [typeSlug]: valueIds,
+    };
+    updateRouteWithFilters();
+    loadProducts();
+  }
+
+  function removeFilter(typeSlug: string) {
+    delete activeFilters.value[typeSlug];
+    updateRouteWithFilters();
+    loadProducts();
+  }
   function updateRouteWithFilters() {
     router.push({
       query: {
@@ -118,5 +138,7 @@ export const useProducts = () => {
     pagination,
     toggleFilter,
     loadProducts,
+    setFilter,
+    removeFilter,
   };
 };

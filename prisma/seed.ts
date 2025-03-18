@@ -57,6 +57,14 @@ async function main() {
         sortOrder: 0,
       },
     }),
+    prisma.attributeType.create({
+      data: {
+        name: 'Gender',
+        slug: 'main',
+        filterable: true,
+        sortOrder: 5,
+      },
+    }),
   ]);
 
   console.log(`Created ${attributeTypes.length} attribute types`);
@@ -138,6 +146,18 @@ async function main() {
     ),
   );
 
+  const mainValues = await Promise.all(
+    ['Men', 'Women', 'Unisex', 'Kids'].map((mainValue) =>
+      prisma.attributeValue.create({
+        data: {
+          value: mainValue.toLowerCase(),
+          displayName: mainValue.toUpperCase(),
+          attributeTypeId: attributeTypeMap['main'],
+        },
+      }),
+    ),
+  );
+
   console.log('Created attribute values');
 
   // Helper function to get random elements from an array
@@ -152,61 +172,61 @@ async function main() {
       name: 'Classic T-Shirt',
       description: 'A comfortable cotton t-shirt for everyday wear',
       price: 19.99,
-      image: '/images/classic-tshirt.jpg',
+      image: '/api/images/classic-tshirt.jpg',
     },
     {
       name: 'Running Shoes',
       description: 'Lightweight running shoes with good support',
       price: 89.99,
-      image: '/images/running-shoes.jpg',
+      image: '/api/images/running-shoes.jpg',
     },
     {
       name: 'Workout Hoodie',
       description: 'Warm and comfortable hoodie for workouts',
       price: 49.99,
-      image: '/images/workout-hoodie.jpg',
+      image: '/api/images/workout-hoodie.jpg',
     },
     {
       name: 'Slim Fit Jeans',
       description: 'Modern slim fit jeans for a stylish look',
       price: 59.99,
-      image: '/images/slim-jeans.jpg',
+      image: '/api/images/slim-jeans.jpg',
     },
     {
       name: 'Sports Watch',
       description: 'Water-resistant sports watch with multiple features',
       price: 129.99,
-      image: '/images/sports-watch.jpg',
+      image: '/api/images/sports-watch.jpg',
     },
     {
       name: 'Premium Socks',
       description: 'Pack of 3 premium cotton socks',
       price: 12.99,
-      image: '/images/premium-socks.jpg',
+      image: '/api/images/premium-socks.jpg',
     },
     {
       name: 'Athletic Shorts',
       description: 'Breathable athletic shorts for running and gym',
       price: 29.99,
-      image: '/images/athletic-shorts.jpg',
+      image: '/api/images/athletic-shorts.jpg',
     },
     {
       name: 'Casual Shirt',
       description: 'Button-up casual shirt for everyday wear',
       price: 39.99,
-      image: '/images/casual-shirt.jpg',
+      image: '/api/images/casual-shirt.jpg',
     },
     {
       name: 'Leather Wallet',
       description: 'Genuine leather wallet with multiple card slots',
       price: 34.99,
-      image: '/images/leather-wallet.jpg',
+      image: '/api/images/leather-wallet.jpg',
     },
     {
       name: 'Polarized Sunglasses',
       description: 'Stylish polarized sunglasses with UV protection',
       price: 79.99,
-      image: '/images/polarized-sunglasses.jpg',
+      image: '/api/images/polarized-sunglasses.jpg',
     },
   ];
 
@@ -220,6 +240,9 @@ async function main() {
   ];
 
   const attributeValueMap = allAttributeValues.reduce((acc, value) => {
+    if (value.attributeTypeId === attributeTypeMap['main']) {
+      return acc;
+    }
     if (!acc[value.attributeTypeId]) {
       acc[value.attributeTypeId] = [];
     }
@@ -250,6 +273,15 @@ async function main() {
         },
       });
     }
+
+    // pick a random main value
+    const mainValue = getRandomElements(mainValues, 1)[0];
+    await prisma.itemAttributeValue.create({
+      data: {
+        itemId: item.id,
+        attributeValueId: mainValue.id,
+      },
+    });
 
     items.push(item);
   }

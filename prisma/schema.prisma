@@ -33,9 +33,11 @@ model Item {
 model AttributeType {
   id          Int         @id @default(autoincrement())
   name        String      // e.g., "brand", "size", "color"
+  description String?
   slug        String      @unique // URL-friendly identifier
   filterable  Boolean     @default(true) // Should this be shown in filters?
   sortOrder   Int         @default(0) // Display order in filter UI
+  required    Boolean     @default(false) // Is this attribute required?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   values      AttributeValue[]
@@ -45,6 +47,7 @@ model AttributeValue {
   id            Int         @id @default(autoincrement())
   value         String      // e.g., "Olympus", "XL", "Red"
   displayName   String      // Formatted name for display
+  sortOrder     Int         @default(0) // Display order in filter UI
   attributeType AttributeType @relation(fields: [attributeTypeId], references: [id])
   attributeTypeId Int
   createdAt     DateTime    @default(now())
@@ -57,7 +60,7 @@ model ItemAttributeValue {
   itemId          Int
   attributeValue  AttributeValue @relation(fields: [attributeValueId], references: [id])
   attributeValueId Int
-
+  
   @@id([itemId, attributeValueId])
 }
 

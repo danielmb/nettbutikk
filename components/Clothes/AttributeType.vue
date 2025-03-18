@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// import type { AttributeType } from '@prisma/client';
-import { watch, ref, defineProps } from 'vue';
+import { ref, defineProps, defineEmits, watch } from 'vue';
+
 interface Value {
   id: number;
   value: string;
@@ -12,6 +12,7 @@ interface Value {
     items: number;
   }
 }
+
 interface Props {
   filter: {
     id: number;
@@ -23,48 +24,40 @@ interface Props {
     updatedAt: string;
     values: Value[];
   }
-  activeFilters: Record<string, number[]>;
+  initialValues?: number[];
 }
 
-const { filter, activeFilters } = withDefaults(defineProps<Props>(), {
-})
+const props = defineProps<Props>();
+const emit = defineEmits(['update-filters']);
 
-const options = filter.values.map((value) => {
-  return {
-    value: String(value.id),
-    label: value.displayName,
-  }
-})
+const options = props.filter.values.map((value) => ({
+  value: String(value.id),
+  label: value.displayName,
+}));
 
-const selected = ref<string[]>([])
+const selected = ref<string[]>([]);
 
+// Watch for changes in the model value
 watch(selected, (newValue) => {
-  console.log(newValue)
-})
+  console.log('Selected values changed:', newValue);
+  const selectedValues = newValue.map(Number); // Convert to numbers
 
-const handleChange = (value: string) => {
-  const activeFilter = activeFilters[filter.slug]
-  if (!activeFilter) {
-    activeFilters[filter.slug] = []
+  emit('update-filters', {
+    slug: props.filter.slug,
+    values: selectedValues,
+  });
+});
+
+onMounted(() => {
+  // Set initial values on mount
+  if (props.initialValues) {
+    selected.value = props.initialValues.map(String); // Convert numbers to strings
   }
-  const index = activeFilter.indexOf(Number(value))
-  if (index === -1) {
-    activeFilter.push(Number(value))
-  } else {
-    activeFilter.splice(index, 1)
-  }
-
-  selected.value = activeFilter.map(String)
-
-
-}
+});
 
 
 </script>
 
 <template>
-  <pre>
-    {{ activeFilters }}
-  </pre>
-  <ShadMultiSelect no-badge v-model="selected" :options="options" @change="handleChange" :placeholder="filter.name" />
+  <ShadMultiSelect no-badge v-model="selected" :options="options" :placeholder="filter.name" />
 </template>

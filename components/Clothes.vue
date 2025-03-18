@@ -1,3 +1,4 @@
+// components/Clothes.vue
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,9 @@ import {
 } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger, } from './ui/select';
 import type { AttributeType } from '@prisma/client';
+import { type UseProductsOptions } from '~/composables/useProducts';
 const props = defineProps<{
+  defaultFilters?: UseProductsOptions['staticFilters'] | undefined;
   mainCategory: string;
 }>();
 
@@ -19,11 +22,15 @@ const props = defineProps<{
 const {
   products,
   filters,
-  activeFilters,
   loading,
-  pagination,
-  toggleFilter,
-} = useProducts()
+  setFilter,
+  removeFilter,
+  activeFilters,
+} = useProducts(
+  {
+    staticFilters: props.defaultFilters,
+  }
+)
 
 
 const currency = useCurrencyStore();
@@ -32,31 +39,30 @@ await currency.fetchExchangeRates();
 
 
 
+const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
+  if (event.values.length === 0) {
+    removeFilter(event.slug);
+    return;
+  }
+  setFilter(event.slug, event.values);
+};
 
 
 </script>
 
 
 <template>
-  <pre>
-    {{ activeFilters }}
-  </pre>
-  <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col">
+  <div
+    class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col space-y-10">
     <div>
-      <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
-        :active-filters="activeFilters" />
+
     </div>
 
-    <div class="flex flex-col items-center justify-center">
 
-      <h1 class=" text-2xl font-bold mb-4">{{ mainCategory }}</h1>
-      <!-- Category description -->
-      <p class="text-center text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-        eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.</p>
-    </div>
     <!-- Filters -->
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
+      <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
+        :initial-values="activeFilters[filter.slug]" @update-filters="handleUpdateFilters" />
     </div>
 
     <div class="grid grid-cols-4 w-fit gap-2">

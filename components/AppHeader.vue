@@ -21,23 +21,31 @@ import {
 import { Button } from '@/components/ui/button';
 const router = useRouter();
 const currentPage = computed(() => router.currentRoute.value.path);
-const mainCategory = ref([
-  {
-    label: 'Men',
-    route: '/men',
-    // icon: 'pi pi-fw pi-user',
-  },
-  {
-    label: 'Women',
-    route: '/women',
-    // icon: 'pi pi-fw pi-user',
-  },
-  {
-    label: 'Kids',
-    route: '/kids',
-    // icon: 'pi pi-fw pi-user',
-  },
-]);
+const { data: mainCategories } = await useFetch('/api/filter/main');
+// const mainCategory = ref([
+//   {
+//     label: 'Men',
+//     route: '/men',
+//     // icon: 'pi pi-fw pi-user',
+//   },
+//   {
+//     label: 'Women',
+//     route: '/women',
+//     // icon: 'pi pi-fw pi-user',
+//   },
+//   {
+//     label: 'Kids',
+//     route: '/kids',
+//     // icon: 'pi pi-fw pi-user',
+//   },
+// ]);
+
+const mainCategory = computed(() => {
+  return mainCategories.value?.values.map((category) => ({
+    label: category.displayName,
+    route: `/category/${category.id}`,
+  }));
+});
 </script>
 <template>
   <header class="flex items-center justify-between p-0 bg-zinc-800 text-white">

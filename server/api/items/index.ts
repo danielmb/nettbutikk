@@ -9,24 +9,23 @@ export default defineEventHandler(async (event) => {
   // Build where clause based on filters
   const where: any = {};
 
-  // Process attribute filters
   if (Object.keys(filters).length > 0) {
-    where.attributes = {
-      some: {
-        attributeValue: {
-          attributeType: {
-            slug: { in: Object.keys(filters) },
-          },
-          id: { in: [] },
-        },
-      },
-    };
+    console.log(filters);
 
-    // For each filter type, fetch matching attribute value IDs
     for (const [typeSlug, valueIds] of Object.entries(filters)) {
-      if (Array.isArray(valueIds) && valueIds.length > 0) {
-        where.attributes.some.attributeValue.id.in.push(...valueIds);
-      }
+      where.AND = where.AND || [];
+      where.AND.push({
+        attributes: {
+          some: {
+            attributeValue: {
+              attributeType: {
+                slug: typeSlug,
+              },
+              id: { in: valueIds },
+            },
+          },
+        },
+      });
     }
   }
 
