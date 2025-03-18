@@ -41,6 +41,7 @@ const option = computed(() => {
   <UserMegaMenu subCategory="subCategory" :items="items" />
 
 
-  <Clothes :mainCategory="option?.displayName ?? ''" :default-filters="defaultFilter?.filters ?? undefined" />
+  <Clothes :mainCategory="option?.displayName ?? ''" :description="option?.description ?? ''"
+    :default-filters="defaultFilter?.filters ?? undefined" />
 
 </template>

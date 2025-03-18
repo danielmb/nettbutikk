@@ -1,5 +1,5 @@
 // prisma/seed.ts
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -147,13 +147,45 @@ async function main() {
   );
 
   const mainValues = await Promise.all(
-    ['Men', 'Women', 'Unisex', 'Kids'].map((mainValue) =>
-      prisma.attributeValue.create({
-        data: {
-          value: mainValue.toLowerCase(),
-          displayName: mainValue.toUpperCase(),
+    // ['Men', 'Women', 'Unisex', 'Kids']
+
+    (
+      [
+        {
           attributeTypeId: attributeTypeMap['main'],
+          value: 'men',
+          displayName: 'MEN',
+          description: 'Clothing for men',
+          sortOrder: 0,
         },
+        {
+          attributeTypeId: attributeTypeMap['main'],
+          value: 'women',
+          displayName: 'WOMEN',
+          description: 'Clothing for women',
+          sortOrder: 1,
+        },
+        {
+          attributeTypeId: attributeTypeMap['main'],
+          value: 'unisex',
+          displayName: 'UNISEX',
+          description: 'Clothing for everyone',
+          sortOrder: 2,
+        },
+        {
+          attributeTypeId: attributeTypeMap['main'],
+          value: 'kids',
+          displayName: 'KIDS',
+          description: 'Clothing for kids',
+          sortOrder: 3,
+        },
+      ] satisfies Prisma.AttributeValueCreateManyInput[]
+    ).map((mainValue) =>
+      prisma.attributeValue.create({
+        data: mainValue,
+        // value: mainValue.toLowerCase(),
+        // displayName: mainValue.toUpperCase(),
+        // attributeTypeId: attributeTypeMap['main'],
       }),
     ),
   );
