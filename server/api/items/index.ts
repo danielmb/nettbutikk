@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
   const filters = query.filters ? JSON.parse(String(query.filters)) : {};
   const page = Number(query.page) || 1;
   const limit = Number(query.limit) || 20;
+  const search = query.search ? String(query.search) : undefined;
 
   // Build where clause based on filters
   const where: any = {};
@@ -27,6 +28,23 @@ export default defineEventHandler(async (event) => {
         },
       });
     }
+  }
+
+  if (search) {
+    where.OR = [
+      {
+        name: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+      {
+        description: {
+          contains: search,
+          mode: 'insensitive',
+        },
+      },
+    ];
   }
 
   // Get products

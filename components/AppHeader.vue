@@ -90,7 +90,6 @@ const mainCategory = computed(() => {
         </a>
       </div>
       <div class="flex items-center gap-4 justify-between w-full">
-
         <NavigationMenu class="hidden lg:flex">
           <NavigationMenuList class="flex gap-0">
             <!-- <NavigationMenuItem>
@@ -130,6 +129,7 @@ const mainCategory = computed(() => {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+        <!-- <AppHeaderSearch /> -->
         <CurrencySelector />
         <AppHeaderUser />
       </div>

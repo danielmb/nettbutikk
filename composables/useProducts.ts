@@ -2,8 +2,14 @@ import type { InternalApi, SerializeObject } from 'nitropack/types';
 
 export interface UseProductsOptions {
   staticFilters?: Record<string, number[]>;
+  noUrl?: boolean;
 }
-export const useProducts = (options: UseProductsOptions = {}) => {
+export const useProducts = (
+  options: UseProductsOptions = {
+    staticFilters: {},
+    noUrl: false,
+  },
+) => {
   const route = useRoute();
   const router = useRouter();
 
@@ -21,7 +27,7 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     total: 0,
     pages: 0,
   });
-
+  const search = ref('');
   const loadFilters = async () => {
     const data = await $fetch('/api/items/filters');
     filters.value = data;
@@ -86,6 +92,9 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     loadProducts();
   }
   function updateRouteWithFilters() {
+    if (options.noUrl) {
+      return;
+    }
     router.push({
       query: {
         ...route.query,
@@ -96,6 +105,9 @@ export const useProducts = (options: UseProductsOptions = {}) => {
   }
 
   function initFromRoute() {
+    if (options.noUrl) {
+      return;
+    }
     if (route.query.filters) {
       try {
         activeFilters.value = JSON.parse(String(route.query.filters));
@@ -107,6 +119,12 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     if (route.query.page) {
       pagination.value.page = Number(route.query.page);
     }
+  }
+
+  function setSearch(value: string) {
+    search.value = value;
+
+    loadProducts();
   }
   watch(
     () => route.query,
@@ -140,5 +158,7 @@ export const useProducts = (options: UseProductsOptions = {}) => {
     loadProducts,
     setFilter,
     removeFilter,
+    setSearch,
+    search,
   };
 };

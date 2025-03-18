@@ -16,6 +16,7 @@ import { type UseProductsOptions } from '~/composables/useProducts';
 const props = defineProps<{
   defaultFilters?: UseProductsOptions['staticFilters'] | undefined;
   mainCategory: string;
+  description?: string;
 }>();
 
 
@@ -62,9 +63,9 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
 
       <h1 class=" text-2xl font-bold mb-4">{{ mainCategory }}</h1>
       <!-- Category description -->
-      <p class="text-center text-gray-500 mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-        eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.</p>
+      <p class="text-center text-gray-500 mb-4">
+        {{ props.description }}
+      </p>
     </div>
     <!-- Filters -->
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
