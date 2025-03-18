@@ -1,7 +1,6 @@
 import { useCurrencyStore } from '~/stores/currency';
 
 export default defineEventHandler(() => {
-  // get currency from the store
   const currency = useCurrencyStore().currency;
 
   return {
