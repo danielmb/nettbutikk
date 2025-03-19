@@ -4,7 +4,7 @@ export interface UseProductsOptions {
   staticFilters?: Record<string, number[]>;
   noUrl?: boolean;
 }
-export const useProducts = (
+export const useProducts = async (
   options: UseProductsOptions = {
     staticFilters: {},
     noUrl: false,
@@ -36,7 +36,7 @@ export const useProducts = (
   async function loadProducts() {
     loading.value = true;
 
-    const { data } = await useFetch('/api/items', {
+    const data = await $fetch('/api/items', {
       params: {
         filters: JSON.stringify(activeFilters.value),
         page: pagination.value.page,
@@ -44,8 +44,8 @@ export const useProducts = (
       },
     });
 
-    products.value = data.value?.products || products.value;
-    pagination.value = data.value?.pagination || pagination.value;
+    products.value = data?.products || products.value;
+    pagination.value = data?.pagination || pagination.value;
     loading.value = false;
 
     return products.value;
@@ -87,7 +87,9 @@ export const useProducts = (
   }
 
   function removeFilter(typeSlug: string) {
-    delete activeFilters.value[typeSlug];
+    // delete activeFilters.value[typeSlug];
+    const { [typeSlug]: _, ...rest } = activeFilters.value;
+    activeFilters.value = rest;
     updateRouteWithFilters();
     loadProducts();
   }
@@ -140,6 +142,7 @@ export const useProducts = (
     await initFromRoute();
     await loadProducts();
   });
+
   // watch prodocts
   // watch(
   //   products,

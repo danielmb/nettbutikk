@@ -6,6 +6,6 @@ const route = useRoute();
 
 <template>
   <div>
-    <h1>Item {{ $route.params.id }}</h1>
+    <h1>Item {{ $route.params.itemId }}</h1>
   </div>
 </template>

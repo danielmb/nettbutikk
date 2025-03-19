@@ -42,12 +42,11 @@ const { data: mainCategories } = await useFetch('/api/filter/main');
 //   },
 // ]);
 const categoryId = route.params.categoryId;
-
 const mainCategory = computed(() => {
   return mainCategories.value?.values.map((category) => ({
     label: category.displayName,
-    route: `/category/${category.id}`,
-    isActive: category.id === Number(categoryId),
+    route: `/category/${category.slug ?? category.id}`,
+    isActive: category.id === Number(categoryId) || category.slug === categoryId,
   }));
 });
 </script>

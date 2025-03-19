@@ -87,7 +87,6 @@ watch(open, (isOpen) => {
 })
 
 
-
 </script>
 
 <template>

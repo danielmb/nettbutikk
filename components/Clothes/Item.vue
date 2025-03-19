@@ -53,13 +53,18 @@ const toggleFavorite = async (id: number) => {
   }
 }
 
+
+const route = useRoute();
+const categoryId = route.params.categoryId;
+
 </script>
 
 
 <template>
   <div class="w-full relative">
 
-    <a :href="`/item/${item.id}`">
+    <!-- <a :href="`item/${item.id}`"> -->
+    <a :href="`/category/${categoryId}/item/${item.id}`">
       <Card class="md:w-[300px] border-none rounded-none shadow-none">
         <CardContent class="flex flex-col items-center p-2 lg:p-0">
           <!-- <div class="grid items-center w-full gap-4">

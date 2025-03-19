@@ -18,7 +18,7 @@ useMagicKeys({
   }
 })
 
-const { products, search, setSearch } = useProducts({ noUrl: true });
+const { products, search, setSearch } = await useProducts({ noUrl: true });
 
 function handleOpenChange() {
   open.value = !open.value

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     where: {
       values: {
         some: {
-          id: Number(id),
+          slug: id,
         },
       },
     },

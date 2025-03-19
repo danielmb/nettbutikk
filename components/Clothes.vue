@@ -17,6 +17,8 @@ import {
   SelectItem,
   SelectLabel,
 } from '@/components/ui/select';
+import { SelectIcon, type SelectTriggerProps, useForwardProps } from 'reka-ui'
+import { ChevronDown } from 'lucide-vue-next'
 
 const props = defineProps<{
   defaultFilters?: UseProductsOptions['staticFilters'] | undefined;
@@ -32,11 +34,14 @@ const {
   setFilter,
   removeFilter,
   activeFilters,
-} = useProducts(
+} = await useProducts(
   {
     staticFilters: props.defaultFilters,
   }
 )
+
+
+
 
 
 const currency = useCurrencyStore();
@@ -53,7 +58,6 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
   setFilter(event.slug, event.values);
 };
 
-
 </script>
 
 
@@ -68,22 +72,33 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
 
       <h1 class=" text-2xl font-bold mb-4">{{ mainCategory }}</h1>
       <!-- Category description -->
-      <p class="text-center text-gray-500 mb-4">
+      <!-- <p class="text-center text-gray-500 mb-4">
         {{ props.description }}
-      </p>
+      </p> -->
+
+      <Text :text="props.description" :maxLength="150">
+        <template #button="{ isExpanded, toggleExpand }">
+          <Button v-if="!isExpanded" variant="ghost" class="pi pi-chevron-down" @click="toggleExpand" />
+          <Button v-else variant="ghost" class="pi pi-chevron-up" @click="toggleExpand" />
+        </template>
+      </Text>
     </div>
     <!-- Filters -->
 
     <div class="hidden lg:grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
       <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
-        :initial-values="activeFilters[filter.slug]" @update-filters="handleUpdateFilters" />
+        v-model:model-value="activeFilters[filter.slug]"
+        @update:model-value="(values) => handleUpdateFilters({ slug: filter.slug, values })" />
     </div>
     <div class="lg:hidden w-full">
       <div class="flex w-full">
         <Select>
-          <SelectTrigger class="w-1/2" as-child>
-            <Button class="w-full">
+          <SelectTrigger as-child hide-chevron>
+            <Button variant="outline" class="w-1/2">
               Sort
+              <SelectIcon as-child>
+                <ChevronDown class="w-4 h-4 opacity-50 shrink-0" />
+              </SelectIcon>
             </Button>
           </SelectTrigger>
           <SelectContent>

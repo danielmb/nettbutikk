@@ -45,6 +45,7 @@ model AttributeType {
 
 model AttributeValue {
   id            Int         @id @default(autoincrement())
+  slug          String?      @unique // URL-friendly identifier
   value         String      // e.g., "Olympus", "XL", "Red"
   displayName   String      // Formatted name for display
   description   String?
@@ -75,3 +76,8 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+
+
+// MegaMenu
+
