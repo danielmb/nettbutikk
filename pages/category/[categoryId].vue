@@ -1,19 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { UseProductsOptions } from '~/composables/useProducts';
-import type { ReadableFilterInput } from '~/server/api/filter/readable.get';
-const items = ref([
-  { label: 'New Arrivals' },
-  { label: 'Clothing' },
-  { label: 'Shoes' },
-  { label: 'Accessories' },
-]);
-
 
 
 const route = useRoute();
 
-const id = ref(Number(route.params.id));
+const id = ref(Number(route.params.categoryId));
 const { data: l } = await useFetch(`/api/filter/slugfromid/${id.value}`);
 const defaultFilter = computed(() => {
   if (l.value) {
@@ -38,7 +29,6 @@ const option = computed(() => {
 </script>
 <template>
 
-  <UserMegaMenu subCategory="subCategory" :items="items" />
 
 
   <Clothes :mainCategory="option?.displayName ?? ''" :description="option?.description ?? ''"

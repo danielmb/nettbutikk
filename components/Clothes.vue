@@ -1,18 +1,23 @@
 // components/Clothes.vue
 <script lang="ts" setup>
-import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger, } from './ui/select';
-import type { AttributeType } from '@prisma/client';
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { type UseProductsOptions } from '~/composables/useProducts';
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+  SelectLabel,
+} from '@/components/ui/select';
+
 const props = defineProps<{
   defaultFilters?: UseProductsOptions['staticFilters'] | undefined;
   mainCategory: string;
@@ -54,7 +59,7 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
 
 <template>
   <div
-    class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col space-y-10">
+    class="relative mx-auto max-w-7xl md:px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col space-y-10">
     <div>
 
     </div>
@@ -68,14 +73,47 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
       </p>
     </div>
     <!-- Filters -->
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
+
+    <div class="hidden lg:grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10 w-full">
       <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
         :initial-values="activeFilters[filter.slug]" @update-filters="handleUpdateFilters" />
     </div>
+    <div class="lg:hidden w-full">
+      <div class="flex w-full">
+        <Select>
+          <SelectTrigger class="w-1/2" as-child>
+            <Button class="w-full">
+              Sort
+            </Button>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="price">Price</SelectItem>
+          </SelectContent>
+        </Select>
+        <Sheet>
+          <SheetTrigger as-child>
+            <Button class="w-1/2">
+              Filters
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right">
+            <SheetHeader>
+              <SheetTitle>
+                Filters
+              </SheetTitle>
+            </SheetHeader>
+            <div class="grid grid-cols-1 gap-4">
+              <ClothesAttributeType v-for="filter in filters" :key="filter.id" :filter="filter"
+                :initial-values="activeFilters[filter.slug]" @update-filters="handleUpdateFilters" />
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </div>
 
-    <div class="grid grid-cols-4 w-fit gap-2">
+    <div class="grid grid-cols-2 md:grid-cols-2  lg:grid-cols-4 w-fit gap-2">
       <div v-if="loading" class="w-full flex justify-center items-center">
-        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900">
+        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 col-span-full">
           <div class="pi pi-spinner"></div>
         </div>
       </div>

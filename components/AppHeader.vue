@@ -19,6 +19,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from '@/components/ui/button';
+
+const route = useRoute();
 const router = useRouter();
 const currentPage = computed(() => router.currentRoute.value.path);
 const { data: mainCategories } = await useFetch('/api/filter/main');
@@ -39,17 +41,19 @@ const { data: mainCategories } = await useFetch('/api/filter/main');
 //     // icon: 'pi pi-fw pi-user',
 //   },
 // ]);
+const categoryId = route.params.categoryId;
 
 const mainCategory = computed(() => {
   return mainCategories.value?.values.map((category) => ({
     label: category.displayName,
     route: `/category/${category.id}`,
+    isActive: category.id === Number(categoryId),
   }));
 });
 </script>
 <template>
   <header class="flex items-center justify-between p-0 bg-zinc-800 text-white">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex-row flex gap-4">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex-row flex gap-4 ">
       <div class="block lg:hidden">
         <Sheet>
           <SheetTrigger>
@@ -70,9 +74,9 @@ const mainCategory = computed(() => {
                 Main menu
               </SheetDescription>
             </SheetHeader>
-            <div class="grid grid-cols-3">
+            <div class="flex flex-wrap gap-x-2">
               <div v-for="{ label, route } in mainCategory" :key="label"
-                class="p-4 text-2xl  uppercase rounded-none h-full">
+                class="text-2xl  uppercase rounded-none h-full">
                 <Button>
                   <a :href="route">
                     {{ label }}
@@ -86,42 +90,15 @@ const mainCategory = computed(() => {
       <div class="flex items-center gap-4 border-r-0 lg:border-r border-zinc-600 pr-4 w-40">
         <a href="/" class="flex items-center gap-2">
           <img src="https://www.radix-vue.com/logo.svg" alt="Radix UI" class="h-8 w-8" />
-          <span class="text-xl font-bold">Radix UI</span>
+          <span class="text-xl font-bold w-52 hidden md:block">Nettbutikk</span>
         </a>
       </div>
       <div class="flex items-center gap-4 justify-between w-full">
         <NavigationMenu class="hidden lg:flex">
           <NavigationMenuList class="flex gap-0">
-            <!-- <NavigationMenuItem>
-        <NavigationMenuTrigger class="bg-card text-base">
-          Features
-        </NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <div class="grid w-[600px] grid-cols-2 gap-5 p-4">
-            <img src="https://www.radix-vue.com/logo.svg" alt="Beach" class="h-full w-full rounded-md object-cover" />
-            <ul class="flex flex-col gap-2">
-
-            </ul>
-          </div>
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuTrigger class="bg-card text-base">
-          Categories
-        </NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <ul class="grid grid-cols-2 gap-2 p-4">
-            <li v-for="{ label, route } in mainCategory" :key="label">
-              <NavigationMenuLink :href="route" class="rounded-md p-3 text-sm hover:bg-muted">
-                {{ label }}
-              </NavigationMenuLink>
-            </li>
-          </ul>
-        </NavigationMenuContent>
-      </NavigationMenuItem> -->
-            <NavigationMenuItem v-for="{ label, route } in mainCategory" :key="label"
+            <NavigationMenuItem v-for="{ label, route, isActive } in mainCategory" :key="label"
               class="p-4 text-2xl hover:bg-primary uppercase rounded-none h-full" :class="{
-                'bg-primary text-white': currentPage === route,
+                'bg-primary text-white': currentPage === route || isActive,
               }">
               <NavigationMenuLink v-if="route" :href="route">
                 {{ label }}
@@ -130,8 +107,12 @@ const mainCategory = computed(() => {
           </NavigationMenuList>
         </NavigationMenu>
         <!-- <AppHeaderSearch /> -->
-        <CurrencySelector />
-        <AppHeaderUser />
+        <div class="hidden lg:flex items-center gap-4">
+          <CurrencySelector />
+        </div>
+        <div class="hidden lg:flex items-center gap-4">
+          <AppHeaderUser />
+        </div>
       </div>
 
     </div>

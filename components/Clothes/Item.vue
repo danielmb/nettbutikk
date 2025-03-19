@@ -60,14 +60,14 @@ const toggleFavorite = async (id: number) => {
   <div class="w-full relative">
 
     <a :href="`/item/${item.id}`">
-      <Card class="w-[300px] border-none rounded-none shadow-none">
-        <CardContent class="flex flex-col items-center">
+      <Card class="md:w-[300px] border-none rounded-none shadow-none">
+        <CardContent class="flex flex-col items-center p-2 lg:p-0">
           <!-- <div class="grid items-center w-full gap-4">
           <div class="text-2xl font-bold">${{ item.price }}</div>
           <div class="text-sm text-gray-500">In Stock: {{ item.stock }}</div>
         </div> -->
 
-          <img :src="item.image" alt="item.title" class="h-80 object-cover" />
+          <img :src="item.image" alt="item.title" class="h-70 object-cover" />
         </CardContent>
         <CardHeader>
           <CardTitle>{{ item.name }}</CardTitle>
