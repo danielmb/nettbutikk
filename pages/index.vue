@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // redirect to mens clothing
 
-navigateTo('/category/men')
+navigateTo('/men')
 </script>
 
 <template>

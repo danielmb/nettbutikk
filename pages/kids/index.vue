@@ -10,33 +10,23 @@ const items = ref([
 ]);
 
 
-const mainFilterReadable: ReadableFilterInput = {
+const readableFilter: ReadableFilterInput = {
   filters: {
-    'main': ['women']
+    'main': ['kids']
   },
 };
-
-const { data: mainFilter } = await useFetch('/api/filter/readable', {
-  query: mainFilterReadable,
+const { data: defaultFilter } = await useFetch('/api/filter/readable', {
+  query: readableFilter,
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
+
+
 const { products: newArrivals } = await useProducts({
-  staticFilters: mainFilter.value ?? {
-  },
-});
-
-const { data: tShirtsFilter } = await useFetch('/api/filter/readable', {
-  query: {
-    filters: {
-      'category': ['tshirts'],
-    },
-  },
-});
-
-const { products: tShirts } = await useProducts({
-  staticFilters: {
-    ...mainFilter.value,
-    ...tShirtsFilter.value,
-  },
+  staticFilters: defaultFilter.value ?? {},
+  noUrl: true,
 });
 
 
@@ -44,8 +34,7 @@ const { products: tShirts } = await useProducts({
 </script>
 <template>
   <NuxtLayout name="category">
-    <div class="w-full flex flex-col space-y-4">
-      <!-- SALE BANNER -->
+    <div class="w-full flex flex-col">
       <div class="w-full flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 py-2">
         <div class="text-center text-lg font-bold">
           <span>Free shipping on all orders over $100</span>
@@ -66,10 +55,10 @@ const { products: tShirts } = await useProducts({
       </div>
       <div class="w-full flex flex-col align-middle items-center">
         <h2 class="text-2xl font-bold text-center">
-          T-Shirts
+          New Arrivals
         </h2>
         <div class="w-full flex flex-wrap justify-center items-center">
-          <ProductCarousel :products="tShirts" />
+          <ProductCarousel :products="newArrivals" />
         </div>
       </div>
     </div>

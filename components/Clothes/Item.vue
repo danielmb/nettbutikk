@@ -66,13 +66,12 @@ const categoryId = route.params.categoryId;
     <!-- <a :href="`item/${item.id}`"> -->
     <a :href="`/category/${categoryId}/item/${item.id}`">
       <Card class="md:w-[300px] border-none rounded-none shadow-none">
-        <CardContent class="flex flex-col items-center p-2 lg:p-0">
-          <!-- <div class="grid items-center w-full gap-4">
-          <div class="text-2xl font-bold">${{ item.price }}</div>
-          <div class="text-sm text-gray-500">In Stock: {{ item.stock }}</div>
-        </div> -->
+        <CardContent class="flex flex-col items-center p-2 h-72 lg:p-0 group">
 
-          <img :src="item.image" alt="item.title" class="h-70 object-cover" />
+          <img :src="item.image" :alt="item.title" class="object-cover overflow-hidden"
+            :class="{ 'group-hover:hidden ': item.images.length > 0 }" />
+          <img v-if="item.images.length > 0" :src="item.images[0].url" :alt="item.title"
+            class="object-cover hidden group-hover:block" />
         </CardContent>
         <CardHeader>
           <CardTitle>{{ item.name }}</CardTitle>

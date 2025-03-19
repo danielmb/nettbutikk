@@ -65,7 +65,6 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
   <div
     class="relative mx-auto max-w-7xl md:px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col space-y-10">
     <div>
-
     </div>
 
     <div class="flex flex-col items-center justify-center">

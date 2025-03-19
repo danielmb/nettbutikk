@@ -1,32 +1,47 @@
 import { prisma } from '~/lib/db';
+import type { Prisma } from '@prisma/client';
+import { z } from 'zod';
+
+const filtersSchema = z.record(z.string(), z.array(z.number()));
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const filters = query.filters ? JSON.parse(String(query.filters)) : {};
+  // const filters = query.filters ? JSON.parse(String(query.filters)) : {};
+  const filtersParser = filtersSchema.safeParse(
+    JSON.parse(String(query.filters)),
+  );
+  if (!filtersParser.success) {
+    console.error(filtersParser.error);
+    throw createError({
+      status: 400,
+      message: 'Invalid filters',
+    });
+  }
+  const filters = filtersParser.data;
   const page = Number(query.page) || 1;
   const limit = Number(query.limit) || 20;
   const search = query.search ? String(query.search) : undefined;
 
   // Build where clause based on filters
-  const where: any = {};
+  const where: Prisma.ItemWhereInput = {};
 
   if (Object.keys(filters).length > 0) {
-    console.log(filters);
-
+    // filters looks like:
     for (const [typeSlug, valueIds] of Object.entries(filters)) {
       where.AND = where.AND || [];
-      where.AND.push({
-        attributes: {
-          some: {
-            attributeValue: {
-              attributeType: {
-                slug: typeSlug,
+      Array.isArray(where.AND) &&
+        where.AND?.push({
+          attributes: {
+            some: {
+              attributeValue: {
+                attributeType: {
+                  slug: typeSlug,
+                },
+                id: { in: valueIds },
               },
-              id: { in: valueIds },
             },
           },
-        },
-      });
+        });
     }
   }
 
@@ -46,13 +61,15 @@ export default defineEventHandler(async (event) => {
       },
     ];
   }
-
   // Get products
   const products = await prisma.item.findMany({
     where,
     skip: (page - 1) * limit,
     take: limit,
     include: {
+      images: {
+        take: 1,
+      },
       attributes: {
         include: {
           attributeValue: {

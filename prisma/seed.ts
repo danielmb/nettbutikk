@@ -1,18 +1,19 @@
 // prisma/seed.ts
 import { Prisma, PrismaClient } from '@prisma/client';
-
+import { faker } from '@faker-js/faker';
 const prisma = new PrismaClient();
 
 async function main() {
   console.log('Starting database seeding...');
 
   // Clear existing data
+  await prisma.image.deleteMany();
+
   await prisma.itemAttributeValue.deleteMany();
   await prisma.attributeValue.deleteMany();
   await prisma.attributeType.deleteMany();
   await prisma.item.deleteMany();
   await prisma.user.deleteMany();
-
   console.log('Deleted existing data');
 
   // Create attribute types
@@ -155,12 +156,14 @@ async function main() {
           attributeTypeId: attributeTypeMap['main'],
           value: 'men',
           displayName: 'MEN',
+          slug: 'men',
           description: 'Clothing for men',
           sortOrder: 0,
         },
         {
           attributeTypeId: attributeTypeMap['main'],
           value: 'women',
+          slug: 'women',
           displayName: 'WOMEN',
           description: 'Clothing for women',
           sortOrder: 1,
@@ -168,6 +171,7 @@ async function main() {
         {
           attributeTypeId: attributeTypeMap['main'],
           value: 'unisex',
+          slug: 'unisex',
           displayName: 'UNISEX',
           description: 'Clothing for everyone',
           sortOrder: 2,
@@ -175,6 +179,7 @@ async function main() {
         {
           attributeTypeId: attributeTypeMap['main'],
           value: 'kids',
+          slug: 'kids',
           displayName: 'KIDS',
           description: 'Clothing for kids',
           sortOrder: 3,
@@ -205,30 +210,70 @@ async function main() {
       description: 'A comfortable cotton t-shirt for everyday wear',
       price: 19.99,
       image: '/api/images/classic-tshirt.jpg',
+      images: {
+        createMany: {
+          data: [
+            { url: '/api/images/classic-tshirt-2.jpg', title: 'Back view' },
+            { url: '/api/images/classic-tshirt-3.jpg', title: 'Side view' },
+          ],
+        },
+      },
     },
     {
       name: 'Running Shoes',
       description: 'Lightweight running shoes with good support',
       price: 89.99,
       image: '/api/images/running-shoes.jpg',
+      images: {
+        createMany: {
+          data: [
+            { url: '/api/images/running-shoes-2.jpg', title: 'Front view' },
+            { url: '/api/images/running-shoes-3.jpg', title: 'Side view' },
+          ],
+        },
+      },
     },
     {
       name: 'Workout Hoodie',
       description: 'Warm and comfortable hoodie for workouts',
       price: 49.99,
       image: '/api/images/workout-hoodie.jpg',
+      images: {
+        createMany: {
+          data: [
+            { url: '/api/images/workout-hoodie-2.jpg', title: 'Back view' },
+            { url: '/api/images/workout-hoodie-3.jpg', title: 'Side view' },
+          ],
+        },
+      },
     },
     {
       name: 'Slim Fit Jeans',
       description: 'Modern slim fit jeans for a stylish look',
       price: 59.99,
       image: '/api/images/slim-jeans.jpg',
+      images: {
+        createMany: {
+          data: [
+            { url: '/api/images/slim-jeans-2.jpg', title: 'Back view' },
+            { url: '/api/images/slim-jeans-3.jpg', title: 'Side view' },
+          ],
+        },
+      },
     },
     {
       name: 'Sports Watch',
       description: 'Water-resistant sports watch with multiple features',
       price: 129.99,
       image: '/api/images/sports-watch.jpg',
+      images: {
+        createMany: {
+          data: [
+            { url: '/api/images/sports-watch-2.jpg', title: 'Side view' },
+            { url: '/api/images/sports-watch-3.jpg', title: 'Close-up' },
+          ],
+        },
+      },
     },
     {
       name: 'Premium Socks',
@@ -259,8 +304,31 @@ async function main() {
       description: 'Stylish polarized sunglasses with UV protection',
       price: 79.99,
       image: '/api/images/polarized-sunglasses.jpg',
+      images: {
+        createMany: {
+          data: [
+            {
+              url: '/api/images/polarized-sunglasses-2.jpg',
+              title: 'Side view',
+            },
+            {
+              url: '/api/images/polarized-sunglasses-3.jpg',
+              title: 'Close-up',
+            },
+          ],
+        },
+      },
     },
-  ];
+  ] satisfies Prisma.ItemCreateInput[];
+
+  for (let i = 0; i < 2500; i++) {
+    itemsData.push({
+      name: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      image: faker.image.urlPicsumPhotos(),
+      price: Number(faker.commerce.price()),
+    });
+  }
 
   // Create all attribute values map for easier access
   const allAttributeValues = [

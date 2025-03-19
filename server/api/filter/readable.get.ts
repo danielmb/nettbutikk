@@ -34,7 +34,6 @@ export default defineEventHandler(async (event) => {
   //   ]
   // }
   const filters = query.filters ? JSON.parse(String(query.filters)) : {};
-  console.log(filters);
   const attributeTypes = await prisma.attributeType.findMany({
     where: {
       slug: { in: Object.keys(filters) },

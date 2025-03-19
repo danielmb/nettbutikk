@@ -45,7 +45,7 @@ const categoryId = route.params.categoryId;
 const mainCategory = computed(() => {
   return mainCategories.value?.values.map((category) => ({
     label: category.displayName,
-    route: `/category/${category.slug ?? category.id}`,
+    route: `/${category.slug ?? category.id}`,
     isActive: category.id === Number(categoryId) || category.slug === categoryId,
   }));
 });
