@@ -8,7 +8,7 @@ const route = useRoute();
 const id = ref(Number.isNaN(Number(route.params.categoryId)) ? route.params.categoryId : Number(route.params.categoryId)) as Ref<number | string>;
 const { data: l } =
   typeof id.value === 'number'
-    ? await useFetch(`/api/filter/idfromslug/${id.value}`)
+    ? await useFetch(`/api/filter/slugfromid/${id.value}`)
     : await useFetch(`/api/filter/typefromvalueslug/${id.value}`);
 const defaultFilter = computed(() => {
   if (l.value) {
