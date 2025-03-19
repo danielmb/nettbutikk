@@ -106,9 +106,9 @@ const mainCategory = computed(() => {
           </NavigationMenuList>
         </NavigationMenu>
         <!-- <AppHeaderSearch /> -->
-        <div class="hidden lg:flex items-center gap-4">
+        <!-- <div class="hidden lg:flex items-center gap-4">
           <CurrencySelector />
-        </div>
+        </div> -->
         <div class="hidden lg:flex items-center gap-4">
           <AppHeaderUser />
         </div>
