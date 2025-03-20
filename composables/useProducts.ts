@@ -139,9 +139,13 @@ export const useProducts = async (
   );
 
   const filteredFilters = computed(() => {
-    if (options.staticFilters) {
+    let staticFilters = options.staticFilters;
+    if (staticFilters) {
       return filters.value.filter((filter) => {
-        console.log(filter);
+        // console.log(filter);
+        if (staticFilters[filter.slug]) {
+          return false;
+        }
         return true;
       });
     }

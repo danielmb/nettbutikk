@@ -11,7 +11,7 @@ import {
 
 
 const { data: clothingOptions } = await useFetch('/api/filter/category')
-
+const { categoryUrl } = useCategory();
 
 const subCategory = ref<SubCategory[]>([
   {
@@ -89,7 +89,7 @@ const subCategory = ref<SubCategory[]>([
           items: clothingOptions.value?.values.map((item) => {
             return {
               label: item.displayName,
-              route: `/category/${item.id}`,
+              route: `/new${categoryUrl.value}/key:category/value:${item.id}`,
             };
           }) ?? [],
         },

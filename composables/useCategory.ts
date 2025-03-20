@@ -10,7 +10,7 @@ export const useCategory = () => {
     return route.params.categoryId;
   });
   const url = computed(() => {
-    return `/category/${category.value}`;
+    return `/key:main/value:${category.value}`;
   });
   return {
     category,

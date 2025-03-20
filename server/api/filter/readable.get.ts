@@ -66,9 +66,9 @@ export default defineEventHandler(async (event) => {
     const attributeType = attributeTypes.find((type) => type.slug === filter);
     if (attributeType) {
       for (const value of filters[filter]) {
-        const attributeValue = attributeType.values.find(
-          (v) => v.value === value,
-        );
+        const attributeValue =
+          attributeType.values.find((v) => v.value === value) ??
+          attributeType.values.find((v) => v.id === Number(value));
         if (attributeValue) {
           mappedFilters[filter].push(attributeValue.id);
         }
