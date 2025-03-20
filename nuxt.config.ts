@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     '@sidebase/nuxt-auth',
     './lib/modules/auth-fix.ts',
   ],

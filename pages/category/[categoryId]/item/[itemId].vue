@@ -5,7 +5,6 @@ const route = useRoute();
 </script>
 
 <template>
-  <div>
-    <h1>Item {{ $route.params.itemId }}</h1>
-  </div>
+  <Item />
+
 </template>

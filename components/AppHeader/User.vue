@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import LoginButton from './LoginButton.vue';
 const { status } = useAuth();
 
 </script>

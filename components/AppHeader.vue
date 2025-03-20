@@ -110,6 +110,7 @@ const mainCategory = computed(() => {
           <CurrencySelector />
         </div> -->
         <div class="hidden lg:flex items-center gap-4">
+          <AppHeaderCart />
           <AppHeaderUser />
         </div>
       </div>
