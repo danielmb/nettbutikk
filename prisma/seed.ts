@@ -8,7 +8,7 @@ async function main() {
 
   // Clear existing data
   await prisma.image.deleteMany();
-
+  await prisma.filters.deleteMany();
   await prisma.itemAttributeValue.deleteMany();
   await prisma.attributeValue.deleteMany();
   await prisma.attributeType.deleteMany();
@@ -321,7 +321,7 @@ async function main() {
     },
   ] satisfies Prisma.ItemCreateInput[];
 
-  for (let i = 0; i < 2500; i++) {
+  for (let i = 0; i < 100; i++) {
     itemsData.push({
       name: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
@@ -398,6 +398,42 @@ async function main() {
   });
 
   console.log(`Created sample user: ${user.email}`);
+
+  // create filters
+  const mensId = mainValues.find((v) => v.value === 'men')?.id;
+  const womensId = mainValues.find((v) => v.value === 'women')?.id;
+  const tshirtsId = categoryValues.find((v) => v.value === 'tshirts')?.id;
+  if (!mensId || !tshirtsId || !womensId) {
+    throw new Error('Could not find main or category attribute values');
+  }
+
+  const filters = [
+    {
+      name: "Men's t-shirts",
+      description: "Men's t-shirts in various styles and colors",
+      public: true,
+      values: {
+        connect: [{ id: mensId }, { id: tshirtsId }],
+      },
+    },
+    {
+      name: "Women's t-shirts",
+      description: "Women's t-shirts in various styles and colors",
+      public: true,
+      values: {
+        connect: [{ id: womensId }, { id: tshirtsId }],
+      },
+    },
+  ] satisfies Prisma.FiltersCreateInput[];
+
+  // await prisma.filters.createMany({
+  //   data: filters,
+  // });
+  for (const filter of filters) {
+    await prisma.filters.create({
+      data: filter,
+    });
+  }
 
   console.log('Seeding completed successfully');
 }

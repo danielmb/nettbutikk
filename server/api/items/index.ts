@@ -1,4 +1,4 @@
-import { prisma } from '~/lib/db';
+import { filterFromFilterId, prisma } from '~/lib/db';
 import type { Prisma } from '@prisma/client';
 import { z } from 'zod';
 
@@ -21,6 +21,23 @@ export default defineEventHandler(async (event) => {
   const page = Number(query.page) || 1;
   const limit = Number(query.limit) || 20;
   const search = query.search ? String(query.search) : undefined;
+  const filterId = query.defaultFilterId
+    ? Number(query.defaultFilterId)
+    : undefined;
+
+  if (filterId) {
+    const defaultFilters = await filterFromFilterId(filterId);
+    for (const [typeSlug, valueIds] of Object.entries(defaultFilters)) {
+      if (!filters[typeSlug]) {
+        filters[typeSlug] = valueIds;
+        continue;
+      }
+
+      filters[typeSlug] = Array.from(
+        new Set([...filters[typeSlug], ...valueIds]),
+      );
+    }
+  }
 
   // Build where clause based on filters
   const where: Prisma.ItemWhereInput = {};

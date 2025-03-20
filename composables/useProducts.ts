@@ -12,7 +12,8 @@ export const useProducts = async (
 ) => {
   const route = useRoute();
   const router = useRouter();
-
+  // route.query.filterId;
+  const filterId = route.query.filterId;
   const products = ref<
     SerializeObject<InternalApi['/api/items']['default']>['products']
   >([]);
@@ -38,6 +39,7 @@ export const useProducts = async (
 
     const data = await $fetch('/api/items', {
       params: {
+        defaultFilterId: filterId,
         filters: JSON.stringify(activeFilters.value),
         page: pagination.value.page,
         limit: pagination.value.limit,

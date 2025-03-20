@@ -1,9 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-
-export const prisma = new PrismaClient();
-export const filterFromFilterId = async (id: number) => {
+import { prisma } from '~/lib/db';
+export default defineEventHandler(async (event) => {
   const filterData = await prisma.filters.findUnique({
-    where: { id: id },
+    where: { id: Number(event.context.params!.id) },
     include: {
       values: {
         include: {
@@ -21,4 +19,4 @@ export const filterFromFilterId = async (id: number) => {
     mappedFilters[filter.attributeType.slug].push(filter.id);
   }
   return mappedFilters;
-};
+});

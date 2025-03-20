@@ -81,6 +81,7 @@ model AttributeValue {
   createdAt       DateTime             @default(now())
   updatedAt       DateTime             @updatedAt
   items           ItemAttributeValue[]
+  Filters         Filters[]
 }
 
 model ItemAttributeValue {
@@ -102,4 +103,13 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-// MegaMenu
+model Filters {
+  id          Int      @id @default(autoincrement())
+  public      Boolean  @default(true)
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  values      AttributeValue[] 
+}
+
