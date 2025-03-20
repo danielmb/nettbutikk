@@ -13,6 +13,7 @@ export const useProducts = async (
   const route = useRoute();
   const router = useRouter();
   // route.query.filterId;
+  const staticFilters2: typeof options.staticFilters = {};
   const filterId = route.query.filterId;
   const products = ref<
     SerializeObject<InternalApi['/api/items']['default']>['products']
@@ -30,7 +31,11 @@ export const useProducts = async (
   });
   const search = ref('');
   const loadFilters = async () => {
-    const data = await $fetch('/api/items/filters');
+    const data = await $fetch('/api/items/filters', {
+      params: {
+        filterId: filterId,
+      },
+    });
     filters.value = data;
   };
 

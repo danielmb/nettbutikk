@@ -22,11 +22,13 @@ import { ChevronDown } from 'lucide-vue-next'
 
 const props = defineProps<{
   defaultFilters?: UseProductsOptions['staticFilters'] | undefined;
-  mainCategory: string;
-  description?: string;
+
 }>();
+const route = useRoute();
 
 
+const filterId = route.query.filterId as string;
+const { data: filter } = await useFetch(`/api/filter/id/${filterId}`);
 const {
   products,
   filters,
@@ -62,6 +64,7 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
 
 
 <template>
+
   <div
     class="relative mx-auto max-w-7xl md:px-4 sm:px-6 lg:px-8 py-8 items-center justify-center flex flex-col space-y-10">
     <div>
@@ -69,13 +72,13 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
 
     <div class="flex flex-col items-center justify-center">
 
-      <h1 class=" text-2xl font-bold mb-4">{{ mainCategory }}</h1>
+      <h1 class=" text-2xl font-bold mb-4">{{  filter?.name }}</h1>
       <!-- Category description -->
       <!-- <p class="text-center text-gray-500 mb-4">
         {{ props.description }}
       </p> -->
 
-      <Text :text="props.description" :maxLength="150">
+      <Text :text="filter?.description ?? ''" :maxLength="150">
         <template #button="{ isExpanded, toggleExpand }">
           <Button v-if="!isExpanded" variant="ghost" class="pi pi-chevron-down" @click="toggleExpand" />
           <Button v-else variant="ghost" class="pi pi-chevron-up" @click="toggleExpand" />
@@ -125,16 +128,16 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
       </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-2  lg:grid-cols-4 w-fit gap-2">
-      <div v-if="loading" class="w-full flex justify-center items-center">
-        <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 col-span-full">
-          <div class="pi pi-spinner"></div>
-        </div>
+    <div v-if="loading" class="w-full flex justify-center items-center absolute">
+      <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 col-span-full">
+        <div class="pi pi-spinner"></div>
       </div>
-      <div v-else-if="!products?.length" class="w-full flex justify-center items-center">
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-2  lg:grid-cols-4 w-fit gap-2">
+      <div v-if="!products?.length" class="w-full flex justify-center items-center">
         <p>No items found</p>
       </div>
-      <ClothesItem v-else :item="{ ...item }" v-for="item in products" :key="item.id" />
+      <ClothesItem :item="{ ...item }" v-for="item in products" :key="item.id" />
     </div>
   </div>
 

@@ -58,6 +58,6 @@ const { data: filter } = await useFetch('/api/filter/readable', {
   <pre>
     {{ filter }}
   </pre>
-  <Clothes :mainCategory=" ''" :description="''"
+  <Clothes 
     :default-filters="filter ?? undefined" />
 </template>

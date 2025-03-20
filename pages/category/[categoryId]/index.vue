@@ -44,7 +44,6 @@ const option = computed(() => {
 
 
 
-  <Clothes :mainCategory="option?.displayName ?? ''" :description="option?.description ?? ''"
-    :default-filters="defaultFilter?.filters ?? undefined" />
+  <Clothes :default-filters="defaultFilter?.filters ?? undefined" />
 
 </template>

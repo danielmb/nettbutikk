@@ -18,5 +18,9 @@ export default defineEventHandler(async (event) => {
     }
     mappedFilters[filter.attributeType.slug].push(filter.id);
   }
-  return mappedFilters;
+  return {
+    ...filterData,
+    values: undefined,
+    filters: mappedFilters,
+  };
 });
