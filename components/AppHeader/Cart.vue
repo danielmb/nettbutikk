@@ -49,8 +49,8 @@ watch(items, (newItems) => {
                 <span>{{ formattedAmount(item.price) }}</span>
                 <span>{{ item.name }}</span>
                 <div class="flex flex-row justify-between">
-                  <p>BROWN</p>
-                  <p>Size 9</p>
+                  <p>{{ item.color ?? 'No Color' }}</p>
+                  <p>{{ item.size ?? 'No Size' }}</p>
                   <p>Qty: {{ item.quantity }}</p>
                 </div>
               </a>

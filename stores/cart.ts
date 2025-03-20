@@ -7,6 +7,8 @@ interface CartItem {
   price: number;
   quantity: number;
   thumbnail: string;
+  color?: string;
+  size?: string;
 }
 
 export const useCartStore = defineStore(

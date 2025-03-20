@@ -9,8 +9,11 @@ export const useCategory = () => {
     }
     return route.params.categoryId;
   });
-
+  const url = computed(() => {
+    return `/category/${category.value}`;
+  });
   return {
     category,
+    categoryUrl: url,
   };
 };

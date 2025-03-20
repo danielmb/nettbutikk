@@ -128,6 +128,7 @@ export const useProducts = async (
 
     loadProducts();
   }
+
   watch(
     () => route.query,
     () => {
@@ -137,6 +138,15 @@ export const useProducts = async (
     { deep: true },
   );
 
+  const filteredFilters = computed(() => {
+    if (options.staticFilters) {
+      return filters.value.filter((filter) => {
+        console.log(filter);
+        return true;
+      });
+    }
+    return filters.value;
+  });
   onMounted(async () => {
     await loadFilters();
     await initFromRoute();
@@ -150,10 +160,11 @@ export const useProducts = async (
   //     console.log(products.value);
   //   },
   //   { deep: true },
-  // );
+  // );,
   return {
     products,
-    filters,
+    // filteredFilters,
+    filters: filteredFilters,
     activeFilters,
     loading,
     pagination,
