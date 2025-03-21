@@ -22,7 +22,7 @@ const newFilter = async (name: string) => {
   <!-- {{ filters }} -->
   <div>
     <Popover>
-      <PopoverTrigger as-child
+      <PopoverTrigger as-child>
         <Button>Create Filter</Button>
       </PopoverTrigger>
       <PopoverContent>
