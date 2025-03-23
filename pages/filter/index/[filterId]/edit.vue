@@ -12,13 +12,12 @@ const id = route.params.filterId as string;
 const updateOpen = (val: boolean) => {
   open.value = val;
   if (!val) {
-    router.push(`/filter`);
+    router.push('/filter?refetch=true');
   }
-};
+}; 1
 
 const open = ref(true);
 
-const { data: filter } = await useFetch(`/api/filter/id/${id}`);
 </script>
 
 <template>
@@ -26,7 +25,7 @@ const { data: filter } = await useFetch(`/api/filter/id/${id}`);
     <DialogContent>
       <DialogTitle>Edit Filter</DialogTitle>
       <DialogDescription> hi </DialogDescription>
-      <FiltersEdit :filterId="id" />
+      <FiltersEdit :filterId="Number(id)" @submit="updateOpen(false)" />
     </DialogContent>
   </Dialog>
 </template>

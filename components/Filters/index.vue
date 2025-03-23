@@ -240,42 +240,25 @@ const handleDelete = async (id: number) => {
     <div class="rounded-md border">
       <Table>
         <TableHeader>
-          <TableRow
-            v-for="headerGroup in table.getHeaderGroups()"
-            :key="headerGroup.id"
-          >
-            <TableHead
-              v-for="header in headerGroup.headers"
-              :key="header.id"
-              :data-pinned="header.column.getIsPinned()"
-              :class="
-                cn(
-                  { 'sticky bg-background/95': header.column.getIsPinned() },
-                  header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
-                )
-              "
-            >
-              <FlexRender
-                v-if="!header.isPlaceholder"
-                :render="header.column.columnDef.header"
-                :props="header.getContext()"
-              />
+          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead v-for="header in headerGroup.headers" :key="header.id" :data-pinned="header.column.getIsPinned()"
+              :class="cn(
+                { 'sticky bg-background/95': header.column.getIsPinned() },
+                header.column.getIsPinned() === 'left' ? 'left-0' : 'right-0',
+              )
+                ">
+              <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header"
+                :props="header.getContext()" />
             </TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           <template v-if="table.getRowModel().rows.length">
-            <TableRow
-              v-for="row in table.getRowModel().rows"
-              :key="row.id"
-              :data-state="row.getIsSelected() ? 'selected' : null"
-            >
+            <TableRow v-for="row in table.getRowModel().rows" :key="row.id"
+              :data-state="row.getIsSelected() ? 'selected' : null">
               <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
-                <FlexRender
-                  :render="cell.column.columnDef.cell"
-                  :props="cell.getContext()"
-                />
+                <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
             </TableRow>
           </template>
@@ -297,36 +280,19 @@ const handleDelete = async (id: number) => {
         {{ table.getFilteredRowModel().rows.length }} row(s) selected.
       </div>
       <div class="space-x-2">
-        <Button
-          variant="outline"
-          size="sm"
-          :disabled="!table.getCanPreviousPage()"
-          @click="table.previousPage()"
-        >
+        <Button variant="outline" size="sm" :disabled="!table.getCanPreviousPage()" @click="table.previousPage()">
           Previous
         </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          :disabled="!table.getCanNextPage()"
-          @click="table.nextPage()"
-        >
+        <Button variant="outline" size="sm" :disabled="!table.getCanNextPage()" @click="table.nextPage()">
           Next
         </Button>
       </div>
     </div>
-    <div
-      v-if="table.getFilteredRowModel().rows.length > 0 && !closedFloatingMenu"
-      class="absolute bottom-12 right-1/2 transform translate-x-1/2 bg-background/95 rounded-md p-4"
-    >
+    <div v-if="table.getFilteredRowModel().rows.length > 0 && !closedFloatingMenu"
+      class="absolute bottom-12 right-1/2 transform translate-x-1/2 bg-background/95 rounded-md p-4">
       <!-- Selection options should float above the table -->
       <div class="flex items-center space-x-2">
-        <Button
-          class="pi pi-trash"
-          variant="outline"
-          size="sm"
-          @click="deleteSelectedRows"
-        />
+        <Button class="pi pi-trash" variant="outline" size="sm" @click="deleteSelectedRows" />
 
         <!-- // close -->
 

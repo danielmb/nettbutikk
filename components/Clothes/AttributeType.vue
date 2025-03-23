@@ -29,9 +29,16 @@ interface Props {
   }
   initialValues?: number[];
 }
+export interface UpdateFiltersPayload {
+  slug: string;
+  values: number[];
+}
 
 const props = defineProps<Props>();
-const emit = defineEmits(['update-filters']);
+
+const emit = defineEmits<{
+  'update-filters': [payload: UpdateFiltersPayload];
+}>();
 
 const options = props.filter.values.map((value) => ({
   value: String(value.id),
