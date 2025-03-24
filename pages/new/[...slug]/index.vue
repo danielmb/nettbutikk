@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const route = useRoute(); 
+const route = useRoute();
 let slugs = route.params.slug as string[];
 
 
@@ -27,8 +27,8 @@ const parsed = computed(() => {
   //   parsed[key].push(...value);
   // }
   // for (let i = 0; i < slug.length; i++) {
-    // }
-    // if starts with key: it is a key
+  // }
+  // if starts with key: it is a key
   for (const slug of slugs) {
     if (slug.startsWith('key:')) {
       const key = slug.replace(/^key:/, '');
@@ -43,7 +43,7 @@ const parsed = computed(() => {
         parsed[lastKey].push(value);
       }
     }
-    
+
   }
   return parsed;
 })
@@ -55,9 +55,5 @@ const { data: filter } = await useFetch('/api/filter/readable', {
 </script>
 
 <template>
-  <pre>
-    {{ filter }}
-  </pre>
-  <Clothes 
-    :default-filters="filter ?? undefined" />
+  <Clothes :default-filters="filter ?? undefined" />
 </template>

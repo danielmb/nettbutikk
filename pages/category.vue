@@ -1,5 +1,3 @@
 <template>
-  <NuxtLayout name="category">
-    <NuxtPage />
-  </NuxtLayout>
+  <NuxtPage />
 </template>

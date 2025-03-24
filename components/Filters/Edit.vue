@@ -109,6 +109,7 @@ const fieldArrayToNumberArray = (fieldArray: FilterValue[], attributeType: strin
 
 const updateFilters = (payload: UpdateFiltersPayload,
   attributeType: string,
+  field: FilterValue[],
   onChange: (
     values: FilterValue[],
   ) => void
@@ -120,7 +121,11 @@ const updateFilters = (payload: UpdateFiltersPayload,
       id: value,
     };
   });
-  onChange(newValues);
+  const filteredValues = field.filter((value) => value.attributeType !== attributeType);
+  newValues.forEach((value) => {
+    filteredValues.push(value);
+  });
+  onChange(filteredValues);
 };
 
 watch(
@@ -168,7 +173,13 @@ watch(
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input type="text" placeholder="Description" v-bind="componentField" />
+                <div class="relative">
+
+                  <Input type="text" placeholder="Description" v-bind="componentField" />
+                  <Button type="button" class="absolute right-0 top-0 p-2">
+                    <div class="pi pi-fw pi-search"></div>
+                  </Button>
+                </div>
               </FormControl>
               <FormDescription>
                 This is the description of the filter.
@@ -182,11 +193,11 @@ watch(
             <FormItem>
               <FormLabel>Set filters</FormLabel>
               <FormControl>
-                <div class="flex flex-row space-x-4 overflow-x-auto">
+                <div class="flex flex-row space-x-4 overflow-x-auto p-4">
                   <div v-for="filter in filters" :key="filter.id">
                     <ClothesAttributeType :filter="filter"
-                      :initialValues="fieldArrayToNumberArray(field.value ?? [], filter.slug)" "
-                      @update-filters=" updateFilters($event, filter.slug, field.onChange)" />
+                      :initialValues="fieldArrayToNumberArray(field.value ?? [], filter.slug)"
+                      @update-filters=" updateFilters($event, filter.slug, field.value ?? [], field.onChange)" />
 
                   </div>
                 </div>

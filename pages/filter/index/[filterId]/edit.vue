@@ -24,7 +24,7 @@ const open = ref(true);
   <Dialog defaultOpen v-model:open="open" v-on:update:open="updateOpen">
     <DialogContent>
       <DialogTitle>Edit Filter</DialogTitle>
-      <DialogDescription> hi </DialogDescription>
+      <DialogDescription> Edit your filter </DialogDescription>
       <FiltersEdit :filterId="Number(id)" @submit="updateOpen(false)" />
     </DialogContent>
   </Dialog>

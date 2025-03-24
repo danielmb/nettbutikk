@@ -33,34 +33,32 @@ const { products: newArrivals } = await useProducts({
 
 </script>
 <template>
-  <NuxtLayout name="category">
-    <div class="w-full flex flex-col">
-      <div class="w-full flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 py-2">
-        <div class="text-center text-lg font-bold">
-          <span>Free shipping on all orders over $100</span>
-        </div>
-        <div class="text-center text-lg font-bold">
-          <span>
-            Use code: <span class="text-red-500">FREESHIP</span>
-          </span>
-        </div>
+  <div class="w-full flex flex-col">
+    <div class="w-full flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 py-2">
+      <div class="text-center text-lg font-bold">
+        <span>Free shipping on all orders over $100</span>
       </div>
-      <div class="w-full flex flex-col align-middle items-center">
-        <h2 class="text-2xl font-bold text-center">
-          New Arrivals
-        </h2>
-        <div class="w-full flex flex-wrap justify-center items-center">
-          <ProductCarousel :products="newArrivals" />
-        </div>
-      </div>
-      <div class="w-full flex flex-col align-middle items-center">
-        <h2 class="text-2xl font-bold text-center">
-          New Arrivals
-        </h2>
-        <div class="w-full flex flex-wrap justify-center items-center">
-          <ProductCarousel :products="newArrivals" />
-        </div>
+      <div class="text-center text-lg font-bold">
+        <span>
+          Use code: <span class="text-red-500">FREESHIP</span>
+        </span>
       </div>
     </div>
-  </NuxtLayout>
+    <div class="w-full flex flex-col align-middle items-center">
+      <h2 class="text-2xl font-bold text-center">
+        New Arrivals
+      </h2>
+      <div class="w-full flex flex-wrap justify-center items-center">
+        <ProductCarousel :products="newArrivals" />
+      </div>
+    </div>
+    <div class="w-full flex flex-col align-middle items-center">
+      <h2 class="text-2xl font-bold text-center">
+        New Arrivals
+      </h2>
+      <div class="w-full flex flex-wrap justify-center items-center">
+        <ProductCarousel :products="newArrivals" />
+      </div>
+    </div>
+  </div>
 </template>

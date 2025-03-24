@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import Autoplay from 'embla-carousel-autoplay'
+import Autoplay from '@/lib/embla/autoplay';
 const props = defineProps<{
   products: {
     id: number;
@@ -17,21 +17,35 @@ const isHovered = ref(false);
 const setHovered = (value: boolean) => {
   isHovered.value = value;
 }
+
+// const delay = ref(1000);
+const plugins = ref([
+  Autoplay({
+    delay: 5000,
+    stopOnMouseEnter: true,
+    stopOnInteraction: true,
+    playOnInit: true,
+    nextOnInit: true,
+  })]
+);
+
+onMounted(() => {
+  // setTimeout(() => {
+  //   plugins.value[0].setOptions({
+  //     delay: 5000,
+  //   });
+  // }, 5000);
+});
+
 </script>
 <template>
   <!-- class="flex flex-col w-1/4 p-2 relative" :href="`/category/${category}/item/${id}`"> -->
   <div class="flex flex-row w-full">
-
-    <Carousel class="relative w-full" :plugins="[Autoplay({
-      stopOnMouseEnter: true,
-      stopOnInteraction: true,
-      delay: Math.floor(Math.random() * 5000) + 5000,
-    })]" :opts="{
+    <Carousel class="relative w-full" v-bind:plugins="plugins" :opts="{
       align: 'start',
       loop: true,
       dragFree: true,
       startIndex: 0,
-
 
     }">
       <!-- Add a on hover -->

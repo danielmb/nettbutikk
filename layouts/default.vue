@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { UseProductsOptions } from '~/composables/useProducts';
-import type { ReadableFilterInput } from '~/server/api/filter/readable.get';
+
 const items = ref([
   { label: 'New Arrivals' },
   { label: 'Clothing' },
@@ -18,6 +17,7 @@ const items = ref([
 </script>
 <template>
   <div>
+    <AppHeader />
     <UserMegaMenu subCategory="subCategory" :items="items" />
     <slot />
   </div>

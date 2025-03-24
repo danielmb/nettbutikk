@@ -168,21 +168,21 @@ async function main() {
           description: 'Clothing for women',
           sortOrder: 1,
         },
-        {
-          attributeTypeId: attributeTypeMap['main'],
-          value: 'unisex',
-          slug: 'unisex',
-          displayName: 'UNISEX',
-          description: 'Clothing for everyone',
-          sortOrder: 2,
-        },
+        // {
+        //   attributeTypeId: attributeTypeMap['main'],
+        //   value: 'unisex',
+        //   slug: 'unisex',
+        //   displayName: 'UNISEX',
+        //   description: 'Clothing for everyone',
+        //   sortOrder: 2,
+        // },
         {
           attributeTypeId: attributeTypeMap['main'],
           value: 'kids',
           slug: 'kids',
           displayName: 'KIDS',
           description: 'Clothing for kids',
-          sortOrder: 3,
+          sortOrder: 2,
         },
       ] satisfies Prisma.AttributeValueCreateManyInput[]
     ).map((mainValue) =>
@@ -218,6 +218,11 @@ async function main() {
           ],
         },
       },
+      attributes: {
+        createMany: {
+          data: [{ attributeValueId: categoryValues[0].id }],
+        },
+      },
     },
     {
       name: 'Running Shoes',
@@ -230,6 +235,11 @@ async function main() {
             { url: '/api/images/running-shoes-2.jpg', title: 'Front view' },
             { url: '/api/images/running-shoes-3.jpg', title: 'Side view' },
           ],
+        },
+      },
+      attributes: {
+        createMany: {
+          data: [{ attributeValueId: categoryValues[3].id }],
         },
       },
     },

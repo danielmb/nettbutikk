@@ -10,8 +10,20 @@ import {
 } from '@/components/ui/navigation-menu';
 
 
-const { data: clothingOptions } = await useFetch('/api/filter/category')
-const { categoryUrl } = useCategory();
+const { data: clothingOptions } = await useFetch('/api/filter/category');
+const { data: filters } = await useFetch('/api/filters');
+
+
+const { categoryUrl, category } = useCategory();
+const clothing = computed(() => {
+  return filters.value?.filter((filter) => filter.values.find((value) => value.attributeType.slug === 'main' && value.value.toLowerCase() === String(category.value).toLowerCase()))
+    .map((filter) => {
+      return {
+        label: filter.name,
+        route: `${categoryUrl.value}/${filter.name.toLowerCase().replace(/[^a-z0-9]/gi, '-')}/cat?filterId=${filter.id}`,
+      };
+    });
+});
 
 const subCategory = ref<SubCategory[]>([
   {
@@ -86,12 +98,13 @@ const subCategory = ref<SubCategory[]>([
           // items: [
 
           // ],
-          items: clothingOptions.value?.values.map((item) => {
-            return {
-              label: item.displayName,
-              route: `/new${categoryUrl.value}/key:category/value:${item.id}`,
-            };
-          }) ?? [],
+          // items: clothingOptions.value?.values.map((item) => {
+          //   return {
+          //     label: item.displayName,
+          //     route: `/new${categoryUrl.value}/key:category/value:${item.id}`,
+          //   };
+          // }) ?? [],
+          items: clothing.value ?? [],
         },
       ],
       // [
@@ -117,6 +130,21 @@ const subCategory = ref<SubCategory[]>([
       // ],
     ],
   },
+
+  {
+    root: true,
+    label: 'Admin',
+    items: [
+      [
+        {
+          label: 'Filters',
+          items: [
+            { label: 'View all', route: '/filter' },
+          ],
+        },
+      ],
+    ],
+  }
 ]);
 
 export interface SubCategory {
@@ -153,39 +181,42 @@ export interface ItemItem {
               {{ item.label }}
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul class=" grid gap-3 p-6 md:w-[800px] lg:w-[1000px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]">
+              <ul class="grid gap-3 p-6 md:w-[800px] lg:w-[1000px] lg:grid-cols-[minmax(0,.75fr)_minmax(0,1fr)]">
                 <li v-for="subItem in item.items" :key="JSON.stringify(subItem)">
                   <ul>
                     <li v-for="subSubItem in subItem" :key="subSubItem.label">
-                    <li class="font-bold">{{ subSubItem.label }}</li>
-                    <li v-if="subSubItem.variant === 'grid'" class="grid grid-cols-2 gap-3">
-                    <li v-for="subSubSubItem in subSubItem.items" :key="subSubSubItem.label">
-                      <a :href="subSubSubItem.route"
-                        class="flex flex-row items-center gap-2 p-4 hover:bg-none hover:shadow-lg rounded-md relative">
-                        <div
-                          class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 hover:border transition-all duration-200">
-                          <img :src="subSubSubItem.image" class="w-16 hover:absolute hover:w-24 hover:-left-2" />
-                        </div>
-                        <span class="self-center">{{ subSubSubItem.label }}</span>
-                      </a>
+                      <strong class="block">{{ subSubItem.label }}</strong>
+                      <ul v-if="subSubItem.variant === 'grid'" class="grid grid-cols-2 gap-3">
+                        <li v-for="subSubSubItem in subSubItem.items" :key="subSubSubItem.label">
+                          <a :href="subSubSubItem.route"
+                            class="flex flex-row items-center gap-2 p-4 hover:bg-none hover:shadow-lg rounded-md relative">
+                            <div
+                              class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 hover:border transition-all duration-200">
+                              <img :src="subSubSubItem.image" class="w-16 hover:absolute hover:w-24 hover:-left-2"
+                                alt="" />
+                            </div>
+                            <span class="self-center">{{ subSubSubItem.label }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                      <ul v-else>
+                        <li v-for="subSubSubItem in subSubItem.items" :key="subSubSubItem.label">
+                        <li v-if="subSubSubItem.type === 'rounded'">
+                          <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
+                            <div
+                              class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0">
+                              <img :src="subSubSubItem.image" class="w-full hover:absolute" alt="" />
+                            </div>
+                            <span class="self-center">{{ subSubSubItem.label }}</span>
+                          </a>
+                        </li>
+                        <li v-else>
+                          <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
+                            <span class="self-center">{{ subSubSubItem.label }}</span>
+                          </a>
+                        </li>
                     </li>
-                </li>
-                <li v-else v-for="subSubSubItem in subSubItem.items" :key="subSubSubItem.label">
-                <li v-if="subSubSubItem.type === 'rounded'">
-                  <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
-                    <div class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0">
-                      <img :src="subSubSubItem.image" class="w-full hover:absolute" />
-                    </div>
-                    <span class="self-center">{{ subSubSubItem.label }}</span>
-                  </a>
-                <li>{{ subSubSubItem.label }}</li>
-                </li>
-                <li v-else>
-                  <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
-                    <span class="self-center">{{ subSubSubItem.label }}</span>
-                  </a>
-                </li>
-                </li>
+                  </ul>
                 </li>
               </ul>
               </li>

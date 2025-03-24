@@ -101,6 +101,20 @@ const columns = [
     header: 'Description',
     cell: (info) => info.getValue(),
   }),
+  columnHelper.display({
+    id: 'Values',
+    header: 'Values',
+    cell: (info) => {
+      return h('div', { class: 'flex space-x-2' }, info.row.original.values.map((value) => h('div', {
+        class: 'flex flex-col border rounded-md p-2 align-center text-center',
+      }, [
+        h('span',
+          { class: 'font-bold' },
+          value.attributeType.name),
+        h('span', { class: 'text-sm' }, value.displayName),
+      ])));
+    },
+  }),
 
   columnHelper.display({
     id: 'actions',
@@ -217,7 +231,7 @@ const handleDelete = async (id: number) => {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="space-y-4 px-4">
     <!-- Header with search and create button -->
     <div class="flex items-center justify-between">
       <h2 class="text-2xl font-bold">Filters</h2>
@@ -288,18 +302,36 @@ const handleDelete = async (id: number) => {
         </Button>
       </div>
     </div>
-    <div v-if="table.getFilteredRowModel().rows.length > 0 && !closedFloatingMenu"
-      class="absolute bottom-12 right-1/2 transform translate-x-1/2 bg-background/95 rounded-md p-4">
-      <!-- Selection options should float above the table -->
-      <div class="flex items-center space-x-2">
-        <Button class="pi pi-trash" variant="outline" size="sm" @click="deleteSelectedRows" />
+    <div class="overflow-hidden">
 
-        <!-- // close -->
-
-        <Button variant="outline" size="sm" @click="closedFloatingMenu = true">
-          Close
-        </Button>
-      </div>
+      <Transition name="pop-in">
+        <div v-if="table.getSelectedRowModel().rows.length > 0 && !closedFloatingMenu"
+          class="absolute bottom-12 right-1/2 transform translate-x-1/2 bg-background/95 rounded-md p-4">
+          <div class="flex items-center space-x-2">
+            <Button class="pi pi-trash" variant="outline" size="sm" @click="deleteSelectedRows" />
+            <Button variant="outline" size="sm" @click="closedFloatingMenu = true">
+              Close
+            </Button>
+          </div>
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
+
+<style scoped>
+.pop-in-enter-active,
+.pop-in-leave-active {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.pop-in-enter-from {
+  transform: translateX(150px);
+  opacity: 0;
+}
+
+.pop-in-leave-to {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+</style>
