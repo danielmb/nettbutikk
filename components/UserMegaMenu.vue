@@ -12,8 +12,7 @@ import {
 
 const { data: clothingOptions } = await useFetch('/api/filter/category');
 const { data: filters } = await useFetch('/api/filters');
-
-
+const { data: megaMenu } = await useFetch('/api/megamenu');
 const { categoryUrl, category } = useCategory();
 const clothing = computed(() => {
   return filters.value?.filter((filter) => filter.values.find((value) => value.attributeType.slug === 'main' && value.value.toLowerCase() === String(category.value).toLowerCase()))
@@ -25,147 +24,121 @@ const clothing = computed(() => {
     });
 });
 
-const subCategory = ref<SubCategory[]>([
-  {
-    label: 'New',
-    root: true,
-    items: [
-      [
-        {
-          label: 'New Arrivals',
-          items: [
-            { label: 'View all' },
-            { label: 'Clothing' },
-            { label: 'Shoes' },
-            { label: 'Accessories' },
-          ],
-        },
-      ],
-      [
-        {
-          label: 'Jeans',
-          variant: 'grid',
-          items: [
-            {
-              label: 'View all',
-              type: 'rounded',
-              image: '/images/jeans_viewall.jpg',
-              route: '/jeans',
-              first: true,
-            },
-            {
-              label: 'Skinny',
-              type: 'rounded',
-              image: '/images/jeans_skinny.avif',
-              route: '/jeans/skinny',
-            },
-            {
-              label: 'Slim',
-              type: 'rounded',
-              image: '/images/jeans_slim.avif',
-              route: '/jeans/slim',
-            },
-            {
-              label: 'Regular',
-              type: 'rounded',
-              image: '/images/jeans_regular.avif',
-              route: '/jeans/regular',
-            },
-            {
-              label: 'Tapered',
-              type: 'rounded',
-              image: '/images/jeans_tapered.avif',
-              route: '/jeans/tapered',
-            },
-            {
-              label: 'Straight',
-              type: 'rounded',
-              image: '/images/jeans_straight.avif',
-              route: '/jeans/straight',
-            },
-          ],
-        },
-      ],
+// const subCategory = ref<SubCategory[]>([
+//   {
+//     label: 'New',
+//     root: true,
+//     items: [
+//       [
+//         {
+//           label: 'New Arrivals',
+//           items: [
+//             { label: 'View all' },
+//             { label: 'Clothing' },
+//             { label: 'Shoes' },
+//             { label: 'Accessories' },
+//           ],
+//         },
+//       ],
+//       [
+//         {
+//           label: 'Jeans',
+//           variant: 'grid',
+//           items: [
+//             {
+//               label: 'View all',
+//               type: 'rounded',
+//               image: '/images/jeans_viewall.jpg',
+//               route: '/jeans',
+//               first: true,
+//             },
+//             {
+//               label: 'Skinny',
+//               type: 'rounded',
+//               image: '/images/jeans_skinny.avif',
+//               route: '/jeans/skinny',
+//             },
+//             {
+//               label: 'Slim',
+//               type: 'rounded',
+//               image: '/images/jeans_slim.avif',
+//               route: '/jeans/slim',
+//             },
+//             {
+//               label: 'Regular',
+//               type: 'rounded',
+//               image: '/images/jeans_regular.avif',
+//               route: '/jeans/regular',
+//             },
+//             {
+//               label: 'Tapered',
+//               type: 'rounded',
+//               image: '/images/jeans_tapered.avif',
+//               route: '/jeans/tapered',
+//             },
+//             {
+//               label: 'Straight',
+//               type: 'rounded',
+//               image: '/images/jeans_straight.avif',
+//               route: '/jeans/straight',
+//             },
+//           ],
+//         },
+//       ],
 
-    ],
-  },
-  {
-    label: 'Clothing',
-    root: true,
-    items: [
-      [
-        {
-          // items: [
+//     ],
+//   },
 
-          // ],
-          // items: clothingOptions.value?.values.map((item) => {
-          //   return {
-          //     label: item.displayName,
-          //     route: `/new${categoryUrl.value}/key:category/value:${item.id}`,
-          //   };
-          // }) ?? [],
-          items: clothing.value ?? [],
-        },
-      ],
-      // [
-      //   {
-      //     items: [
-      //       {
-      //         label: 'Underwear',
-      //       },
-      //       {
-      //         label: 'Loungewear',
-      //       },
-      //       {
-      //         label: 'Socks',
-      //       },
-      //       {
-      //         label: 'Big & Tall',
-      //       },
-      //       {
-      //         label: 'Accessories',
-      //       },
-      //     ],
-      //   },
-      // ],
-    ],
-  },
+// ]);
 
-  {
-    root: true,
-    label: 'Admin',
-    items: [
-      [
-        {
-          label: 'Filters',
-          items: [
-            { label: 'View all', route: '/filter' },
-          ],
-        },
-      ],
-    ],
-  }
-]);
+const subCategory = computed(() => {
+  if (!megaMenu.value) return [];
 
-export interface SubCategory {
-  label: string;
-  root: boolean;
-  items: Array<SubCategoryItem[]>;
-}
+  return megaMenu.value.categories.map(category => {
+    return {
+      label: category.label,
+      root: category.root,
+      items: category.columns.map(column => {
+        return column.sections.map(section => {
+          return {
+            label: section.label,
+            variant: section.variant || undefined,
+            items: section.items.map(item => {
+              return {
+                label: item.label,
+                type: item.type || undefined,
+                image: item.image || undefined,
+                route: item.route || undefined,
+                first: item.first || false
+              };
+            })
+          };
+        });
+      })
+    };
+  });
+});
 
-export interface SubCategoryItem {
-  label?: string;
-  items: ItemItem[];
-  variant?: 'grid';
-}
 
-export interface ItemItem {
-  label: string;
-  type?: string;
-  image?: string;
-  route?: string;
-  first?: boolean;
-}
+// export interface SubCategory {
+//   label: string;
+//   root: boolean;
+//   items: Array<SubCategoryItem[]>;
+// }
+
+// export interface SubCategoryItem {
+//   label?: string;
+//   items: ItemItem[];
+//   variant?: 'grid';
+// }
+
+// export interface ItemItem {
+//   label: string;
+//   type?: string;
+//   image?: string;
+//   route?: string;
+//   first?: boolean;
+// }
 
 
 </script>
@@ -192,8 +165,8 @@ export interface ItemItem {
                             class="flex flex-row items-center gap-2 p-4 hover:bg-none hover:shadow-lg rounded-md relative">
                             <div
                               class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 hover:border transition-all duration-200">
-                              <img :src="subSubSubItem.image" class="w-16 hover:absolute hover:w-24 hover:-left-2"
-                                alt="" />
+                              <img v-if="subSubSubItem.image" :src="subSubSubItem.image"
+                                class="w-16 hover:absolute hover:w-24 hover:-left-2" alt="" />
                             </div>
                             <span class="self-center">{{ subSubSubItem.label }}</span>
                           </a>
@@ -205,7 +178,8 @@ export interface ItemItem {
                           <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
                             <div
                               class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0">
-                              <img :src="subSubSubItem.image" class="w-full hover:absolute" alt="" />
+                              <img v-if="subSubSubItem.image" :src="subSubSubItem.image" class="w-full hover:absolute"
+                                alt="" />
                             </div>
                             <span class="self-center">{{ subSubSubItem.label }}</span>
                           </a>
@@ -227,5 +201,4 @@ export interface ItemItem {
       </NavigationMenu>
     </div>
   </div>
-
 </template>
