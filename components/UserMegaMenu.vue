@@ -23,101 +23,123 @@ const clothing = computed(() => {
       };
     });
 });
+interface SubCategory {
+  label: string;
+  root: boolean;
+  items: Array<SubCategoryItem[]>;
+}
+interface SubCategoryItem {
+  label?: string;
+  items: ItemItem[];
+  variant?: 'grid';
+}
+interface ItemItem {
+  label: string;
+  type?: string;
+  image?: string;
+  route?: string;
+  first?: boolean;
+}
+const subCategory = ref<SubCategory[]>([
+  {
+    label: 'New',
+    root: true,
+    items: [
+      [
+        {
+          label: 'New Arrivals',
+          items: [
+            { label: 'View all' },
+            { label: 'Clothing' },
+            { label: 'Shoes' },
+            { label: 'Accessories' },
+          ],
+        },
+      ],
+      [
+        {
+          label: 'Jeans',
+          variant: 'grid',
+          items: [
+            {
+              label: 'View all',
+              type: 'rounded',
+              image: '/images/jeans_viewall.jpg',
+              route: '/jeans',
+              first: true,
+            },
+            {
+              label: 'Skinny',
+              type: 'rounded',
+              image: '/images/jeans_skinny.avif',
+              route: '/jeans/skinny',
+            },
+            {
+              label: 'Slim',
+              type: 'rounded',
+              image: '/images/jeans_slim.avif',
+              route: '/jeans/slim',
+            },
+            {
+              label: 'Regular',
+              type: 'rounded',
+              image: '/images/jeans_regular.avif',
+              route: '/jeans/regular',
+            },
+            {
+              label: 'Tapered',
+              type: 'rounded',
+              image: '/images/jeans_tapered.avif',
+              route: '/jeans/tapered',
+            },
+            {
+              label: 'Straight',
+              type: 'rounded',
+              image: '/images/jeans_straight.avif',
+              route: '/jeans/straight',
+            },
+          ],
+        },
+      ],
 
-// const subCategory = ref<SubCategory[]>([
-//   {
-//     label: 'New',
-//     root: true,
-//     items: [
-//       [
-//         {
-//           label: 'New Arrivals',
-//           items: [
-//             { label: 'View all' },
-//             { label: 'Clothing' },
-//             { label: 'Shoes' },
-//             { label: 'Accessories' },
-//           ],
-//         },
-//       ],
-//       [
-//         {
-//           label: 'Jeans',
-//           variant: 'grid',
-//           items: [
-//             {
-//               label: 'View all',
-//               type: 'rounded',
-//               image: '/images/jeans_viewall.jpg',
-//               route: '/jeans',
-//               first: true,
-//             },
-//             {
-//               label: 'Skinny',
-//               type: 'rounded',
-//               image: '/images/jeans_skinny.avif',
-//               route: '/jeans/skinny',
-//             },
-//             {
-//               label: 'Slim',
-//               type: 'rounded',
-//               image: '/images/jeans_slim.avif',
-//               route: '/jeans/slim',
-//             },
-//             {
-//               label: 'Regular',
-//               type: 'rounded',
-//               image: '/images/jeans_regular.avif',
-//               route: '/jeans/regular',
-//             },
-//             {
-//               label: 'Tapered',
-//               type: 'rounded',
-//               image: '/images/jeans_tapered.avif',
-//               route: '/jeans/tapered',
-//             },
-//             {
-//               label: 'Straight',
-//               type: 'rounded',
-//               image: '/images/jeans_straight.avif',
-//               route: '/jeans/straight',
-//             },
-//           ],
-//         },
-//       ],
+    ],
+  },
 
-//     ],
-//   },
+  {
+    label: 'Clothing',
+    root: true,
+    items: [[{ label: 'Clothing', items: clothing.value?.map((item) => ({ label: item.label, route: item.route })) || [] }]],
+  }
 
-// ]);
+]);
 
-const subCategory = computed(() => {
-  if (!megaMenu.value) return [];
+// const subCategory = computed(() => {
+//   if (!megaMenu.value) return [];
 
-  return megaMenu.value.categories.map(category => {
-    return {
-      label: category.label,
-      root: category.root,
-      items: category.columns.map(column => {
-        return column.sections.map(section => {
-          return {
-            label: section.label,
-            variant: section.variant || undefined,
-            items: section.items.map(item => {
-              return {
-                label: item.label,
-                type: item.type || undefined,
-                image: item.image || undefined,
-                route: item.route || undefined,
-                first: item.first || false
-              };
-            })
-          };
-        });
-      })
-    };
-  });
-});
+//   return megaMenu.value.categories.map(category => {
+//     return {
+//       label: category.label,
+//       root: category.root,
+//       items: category.columns.map(column => {
+//         return column.sections.map(section => {
+//           return {
+//             label: section.label,
+//             variant: section.variant || undefined,
+//             items: section.items.map(item => {
+//               return {
+//                 label: item.label,
+//                 type: item.type || undefined,
+//                 image: item.image || undefined,
+//                 route: item.route || undefined,
+//                 first: item.first || false
+//               };
+//             })
+//           };
+//         });
+//       })
+//     };
+//   });
+// });
 
 
 // export interface SubCategory {

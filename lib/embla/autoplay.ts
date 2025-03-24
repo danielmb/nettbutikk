@@ -95,12 +95,6 @@ function Autoplay(userOptions: AutoplayOptionsType = {}): AutoplayType {
     }
 
     if (options.playOnInit) startAutoplay();
-
-    if (nextOnInit) {
-      emblaApi.on('init', () => {
-        next();
-      });
-    }
   }
 
   function destroy(): void {
@@ -142,8 +136,6 @@ function Autoplay(userOptions: AutoplayOptionsType = {}): AutoplayType {
     if (!autoplayActive) emblaApi.emit('autoplay:play');
     setTimer();
     autoplayActive = true;
-
-    next();
   }
 
   function stopAutoplay(): void {
