@@ -1,11 +1,15 @@
 import { prisma } from '~/lib/db';
 
 export default defineEventHandler(async (event) => {
+  const { id: paramsId } = event.context.params!;
+  const id = Number(paramsId) ? Number(paramsId) : paramsId;
+  console.log('id:', id);
   try {
-    // Fetch the active navigation menu with all its related data
-    const navigationMenu = await prisma.navigationMenu.findFirst({
+    const navigationMenu = await prisma.navigationMenu.findUnique({
       where: {
         isActive: true,
+        id: typeof id === 'number' ? id : undefined,
+        name: typeof id === 'string' ? id : undefined,
       },
       include: {
         categories: {

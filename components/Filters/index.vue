@@ -37,12 +37,14 @@ import {
   PaginationList,
   PaginationListItem,
 } from '@/components/ui/pagination';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { valueUpdater } from '~/lib/utils';
 import Checkbox from '../ui/checkbox/Checkbox.vue';
 import { routerKey } from 'vue-router';
+import AddToMega from './AddToMega.vue';
 const router = useRouter();
 
 // Fetch filters from API
@@ -139,6 +141,39 @@ const columns = [
           },
           { default: () => 'Delete' },
         ),
+        // h(
+        //   Button,
+        //   {
+        //     size: 'sm',
+        //     variant: 'outline',
+        //     onClick: () => addToMegamenu(info.row.original.id),
+        //   },
+        //   { default: () => 'Add to MegaMenu' },
+        // )
+        h(
+          Dialog,
+          {},
+          [
+            h(
+              DialogTrigger,
+              {
+                as: 'button',
+                size: 'sm',
+                variant: 'outline',
+              },
+              { default: () => 'Add to MegaMenu' },
+            ),
+            h(
+              DialogContent,
+              {},
+              [
+                h('div', { class: 'flex flex-col space-y-4' }, [
+                  h(AddToMega, { route: `/men/ctfr/${info.row.original.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}/cat?filterId=${info.row.original.id}`, name: info.row.original.name }),
+                ]),
+              ],
+            ),
+          ],
+        )
       ]),
   }),
 ];
@@ -148,7 +183,6 @@ const columnVisibility = ref<VisibilityState>({});
 const rowSelection = ref({});
 const expanded = ref<ExpandedState>({});
 const closedFloatingMenu = ref(false); // manually close floating menu, will reopen on selection change
-
 watch(
   () => rowSelection.value,
   () => {
@@ -223,6 +257,10 @@ const handleEdit = (row: any) => {
 
 const handleDelete = async (id: number) => {
   await deleteRow(id);
+};
+
+const addToMegamenu = async (id: number) => {
+  console.log('Add to MegaMenu:', id);
 };
 
 // Load data from filters

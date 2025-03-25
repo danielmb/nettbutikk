@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     'pinia-plugin-persistedstate/nuxt',
     '@sidebase/nuxt-auth',
     './lib/modules/auth-fix.ts',
+    '@hebilicious/vue-query-nuxt',
   ],
   compatibilityDate: '2024-11-01',
   devtools: {

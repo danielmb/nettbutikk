@@ -18,7 +18,7 @@ const items = ref([
 <template>
   <div>
     <AppHeader />
-    <UserMegaMenu subCategory="subCategory" :items="items" />
+    <UserMegaDB subCategory="subCategory" :items="items" />
     <slot />
   </div>
 </template>
