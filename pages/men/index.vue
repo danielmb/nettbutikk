@@ -29,8 +29,12 @@ const { products: newArrivals } = await useProducts({
 
 
 const { data: filters } = await useFetch('/api/filters');
+const { data: homePage } = await useFetch('/api/homepage/men');
 </script>
 <template>
+
+
+
   <div class="w-full flex flex-col space-y-4">
     <!-- SALE BANNER -->
     <div class="w-full flex flex-col justify-center items-center bg-gray-100 dark:bg-gray-800 py-2">
@@ -43,7 +47,7 @@ const { data: filters } = await useFetch('/api/filters');
         </span>
       </div>
     </div>
-    <div class="w-full flex flex-col align-middle items-center">
+    <!-- <div class="w-full flex flex-col align-middle items-center">
       <h2 class="text-2xl font-bold text-center">
         New Arrivals
       </h2>
@@ -54,20 +58,22 @@ const { data: filters } = await useFetch('/api/filters');
         <Button variant="link">View all new arrivals</Button>
       </a>
     </div>
-    <div class="w-full flex flex-col align-middle items-center">
+    <div class="w-full flex flex-col align-middle items-center"> -->
 
-      <!-- <div class="w-full flex flex-wrap justify-center items-center">
+    <!-- <div class="w-full flex flex-wrap justify-center items-center">
         <ProductCarousel :products="tShirts" />
       </div>
       <a :href="`/category/${tShirtsFilter?.category[0]}`" class="text-lg font-bold ">
         <Button variant="link">View all t-shirts</Button>
       </a> -->
-      <ProductsFromFilter :filter-id="filters?.[0].id ?? 0" variant="carousel">
-        <template #before>
-          >
-          before
-        </template>
-      </ProductsFromFilter>
+
+    <!-- </div> -->
+
+    <div class="flex flex-col">
+      <div v-for="section in homePage?.homePageSections ?? []">
+        {{ section.name }}
+      </div>
     </div>
+
   </div>
 </template>

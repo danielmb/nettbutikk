@@ -25,23 +25,23 @@ model Image {
 }
 
 model Item {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
   price       Float
   image       String // main image
   images      Image[]
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  users       User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
 
   // All the single relations
-  brand         AttributeValue? @relation("brand", fields: [brandId], references: [id])
-  brandId       Int?
+  brand   AttributeValue? @relation("brand", fields: [brandId], references: [id])
+  brandId Int?
 
-  category      AttributeValue? @relation("category", fields: [categoryId], references: [id]) // main category
-  categoryId    Int?
+  category   AttributeValue? @relation("category", fields: [categoryId], references: [id]) // main category
+  categoryId Int?
 
   // Eav model
   attributes ItemAttributeValue[]
@@ -91,12 +91,10 @@ model AttributeValue {
   items           ItemAttributeValue[]
   Filters         Filters[]
 
-  menuItems       NavigationItem[]   
+  menuItems NavigationItem[]
 
-  
-  brandToItems    Item[]               @relation("brand")
-  categoryToItems Item[]               @relation("category")
-
+  brandToItems    Item[] @relation("brand")
+  categoryToItems Item[] @relation("category")
 }
 
 model ItemAttributeValue {
@@ -119,76 +117,94 @@ model User {
 }
 
 model Filters {
-  id          Int      @id @default(autoincrement())
-  public      Boolean  @default(true)
+  id          Int              @id @default(autoincrement())
+  public      Boolean          @default(true)
   name        String
   description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  values      AttributeValue[] 
-  menuItems   NavigationItem[]  // Add this relation
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  values      AttributeValue[]
+  menuItems   NavigationItem[] // Add this relation
 
+  HomePageSection HomePageSection[]
 }
 
-
 model NavigationMenu {
-  id          Int                @id @default(autoincrement())
-  name        String              @unique 
+  id          Int                  @id @default(autoincrement())
+  name        String               @unique
   description String?
-  isActive    Boolean            @default(true)
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  isActive    Boolean              @default(true)
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
   categories  NavigationCategory[]
 }
 
 model NavigationCategory {
-  id              Int                @id @default(autoincrement())
-  label           String
-  root            Boolean            @default(false)
-  navigationMenu  NavigationMenu     @relation(fields: [navigationMenuId], references: [id], onDelete: Cascade)
+  id               Int                @id @default(autoincrement())
+  label            String
+  root             Boolean            @default(false)
+  navigationMenu   NavigationMenu     @relation(fields: [navigationMenuId], references: [id], onDelete: Cascade)
   navigationMenuId Int
-  columns         NavigationColumn[]
-  sortOrder       Int                @default(0)
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
+  columns          NavigationColumn[]
+  sortOrder        Int                @default(0)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model NavigationColumn {
-  id                 Int                  @id @default(autoincrement())
-  category           NavigationCategory   @relation(fields: [navigationCategoryId], references: [id], onDelete: Cascade)
+  id                   Int                 @id @default(autoincrement())
+  category             NavigationCategory  @relation(fields: [navigationCategoryId], references: [id], onDelete: Cascade)
   navigationCategoryId Int
-  sections           NavigationSection[]
-  sortOrder          Int                  @default(0)
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  sections             NavigationSection[]
+  sortOrder            Int                 @default(0)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
 }
 
 model NavigationSection {
-  id                Int                @id @default(autoincrement())
-  label             String
-  variant           String?            // e.g., 'grid' or null for default list
-  column            NavigationColumn   @relation(fields: [navigationColumnId], references: [id], onDelete: Cascade)
+  id                 Int              @id @default(autoincrement())
+  label              String
+  variant            String? // e.g., 'grid' or null for default list
+  column             NavigationColumn @relation(fields: [navigationColumnId], references: [id], onDelete: Cascade)
   navigationColumnId Int
-  items             NavigationItem[]
-  sortOrder         Int                @default(0)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
+  items              NavigationItem[]
+  sortOrder          Int              @default(0)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
 }
 
 model NavigationItem {
-  id                 Int                @id @default(autoincrement())
-  label              String
-  route              String?
-  type               String?            // e.g., 'rounded' for specific styling
-  image              String?            // URL to the image
-  first              Boolean            @default(false)
-  section            NavigationSection  @relation(fields: [navigationSectionId], references: [id], onDelete: Cascade)
+  id                  Int               @id @default(autoincrement())
+  label               String
+  route               String?
+  type                String? // e.g., 'rounded' for specific styling
+  image               String? // URL to the image
+  first               Boolean           @default(false)
+  section             NavigationSection @relation(fields: [navigationSectionId], references: [id], onDelete: Cascade)
   navigationSectionId Int
-  sortOrder          Int                @default(0)
-  relatedFilter      Filters?           @relation(fields: [filterId], references: [id])
-  filterId           Int?
-  relatedCategory    AttributeValue?    @relation(fields: [categoryValueId], references: [id])
-  categoryValueId    Int?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  sortOrder           Int               @default(0)
+  relatedFilter       Filters?          @relation(fields: [filterId], references: [id])
+  filterId            Int?
+  relatedCategory     AttributeValue?   @relation(fields: [categoryValueId], references: [id])
+  categoryValueId     Int?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+}
+
+model HomePageSection {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+
+  filter     Filters?  @relation(fields: [filterId], references: [id])
+  filterId   Int?
+  HomePage   HomePage? @relation(fields: [homePageId], references: [id])
+  homePageId Int?
+}
+
+model HomePage {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  homePageSections HomePageSection[]
 }
