@@ -168,7 +168,7 @@ const columns = [
               {},
               [
                 h('div', { class: 'flex flex-col space-y-4' }, [
-                  h(AddToMega, { route: `/men/ctfr/${info.row.original.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}/cat?filterId=${info.row.original.id}`, name: info.row.original.name }),
+                  h(AddToMega, { route: `/men/ctfr/${info.row.original.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}/cat?filterId=${info.row.original.id}`, name: info.row.original.name, filterId: info.row.original.id }),
                 ]),
               ],
             ),

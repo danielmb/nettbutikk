@@ -164,7 +164,7 @@ export default defineEventHandler(async (event) => {
                 });
               } else {
                 // Create new item
-                await tx.navigationItem.create({
+                const createdItem = await tx.navigationItem.create({
                   data: {
                     label: item.label,
                     route: item.route,
@@ -177,6 +177,8 @@ export default defineEventHandler(async (event) => {
                     navigationSectionId: sectionId,
                   },
                 });
+
+                remainingItemIds.add(createdItem.id);
               }
             }
           }

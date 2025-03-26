@@ -19,6 +19,10 @@ const items = ref([
   <div>
     <AppHeader />
     <UserMegaDB subCategory="subCategory" :items="items" />
+    <div class="px-52">
+      <BreadcrumbData />
+    </div>
+
     <slot />
   </div>
 </template>

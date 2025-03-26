@@ -104,13 +104,13 @@ const handleUpdateFilters = (event: { slug: string; values: number[] }) => {
       </div>
     </div>
 
-    <div v-if="loading" class="w-full flex justify-center items-center absolute">
+    <div v-if="loading || !products" class="w-full flex justify-center items-center absolute">
       <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 col-span-full">
         <div class="pi pi-spinner"></div>
       </div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 w-fit gap-2">
-      <div v-if="!products?.length" class="w-full flex justify-center items-center">
+    <div v-else class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 w-fit gap-2">
+      <div v-if="!products?.length && !loading" class="col-span-full flex justify-center items-center">
         <p>No items found</p>
       </div>
       <ClothesItem :item="{ ...item }" v-for="item in products" :key="item.id" />

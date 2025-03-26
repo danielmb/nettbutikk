@@ -685,7 +685,7 @@ const previewItems = computed(() => {
                                                           </div>
                                                         </CardHeader>
 
-                                                        <CardContent class="p-4 pt-0">
+                                                        <CardContent class="p-4 pt-0" v-if="!item.filterId">
                                                           <div class="grid gap-4">
                                                             <!-- <div>
                                                                 <Label>Item Label</Label>
@@ -827,6 +827,10 @@ const previewItems = computed(() => {
                                                             </Select>
                                                           </div> -->
                                                           </div>
+                                                        </CardContent>
+                                                        <CardContent v-else>
+                                                          This item is linked to a filter.
+                                                          Disconnet the filter to edit the item.
                                                         </CardContent>
                                                       </Card>
                                                     </div>
