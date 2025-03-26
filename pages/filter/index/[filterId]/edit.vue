@@ -14,7 +14,7 @@ const updateOpen = (val: boolean) => {
   if (!val) {
     router.push('/filter?refetch=true');
   }
-}; 1
+};
 
 const open = ref(true);
 
