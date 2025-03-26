@@ -25,22 +25,10 @@ const { products: newArrivals } = await useProducts({
   },
 });
 // newArrivals.value[0].category.slug
-const { data: tShirtsFilter } = await useFetch('/api/filter/readable', {
-  query: {
-    filters: {
-      'category': ['tshirts'],
-    },
-  },
-});
-
-const { products: tShirts } = await useProducts({
-  staticFilters: {
-    ...mainFilter.value,
-    ...tShirtsFilter.value,
-  },
-});
 
 
+
+const { data: filters } = await useFetch('/api/filters');
 </script>
 <template>
   <div class="w-full flex flex-col space-y-4">
@@ -67,15 +55,19 @@ const { products: tShirts } = await useProducts({
       </a>
     </div>
     <div class="w-full flex flex-col align-middle items-center">
-      <h2 class="text-2xl font-bold text-center">
-        T-Shirts
-      </h2>
-      <div class="w-full flex flex-wrap justify-center items-center">
+
+      <!-- <div class="w-full flex flex-wrap justify-center items-center">
         <ProductCarousel :products="tShirts" />
       </div>
       <a :href="`/category/${tShirtsFilter?.category[0]}`" class="text-lg font-bold ">
         <Button variant="link">View all t-shirts</Button>
-      </a>
+      </a> -->
+      <ProductsFromFilter :filter-id="filters?.[0].id ?? 0" variant="carousel">
+        <template #before>
+          >
+          before
+        </template>
+      </ProductsFromFilter>
     </div>
   </div>
 </template>

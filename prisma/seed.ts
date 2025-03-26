@@ -66,6 +66,14 @@ async function main() {
         sortOrder: 5,
       },
     }),
+    prisma.attributeType.create({
+      data: {
+        name: 'Product Type',
+        slug: 'producttype',
+        filterable: true,
+        sortOrder: 6,
+      },
+    }),
   ]);
 
   console.log(`Created ${attributeTypes.length} attribute types`);
@@ -136,7 +144,8 @@ async function main() {
   );
 
   const categoryValues = await Promise.all(
-    ['T-Shirts', 'Hoodies', 'Pants', 'Shoes', 'Accessories'].map((category) =>
+    // ['T-Shirts', 'Hoodies', 'Pants', 'Shoes', 'Accessories'].map((category) =>
+    ['Clothing', 'Shoes', 'Accessories', 'Sportswear'].map((category) =>
       prisma.attributeValue.create({
         data: {
           value: category.toLowerCase().replace('-', ''),
@@ -146,6 +155,59 @@ async function main() {
       }),
     ),
   );
+
+  const productTypeMap = {
+    // clothing: ['T-Shirts', 'Shorts', 'Hoodies', 'Trousers'],
+    clothing: await Promise.all(
+      ['T-Shirts', 'Shorts', 'Hoodies', 'Trousers'].map((product) =>
+        prisma.attributeValue.create({
+          data: {
+            value: product.toLowerCase().replace('-', ''),
+            displayName: product,
+            attributeTypeId: attributeTypeMap['producttype'],
+          },
+        }),
+      ),
+    ),
+    // shoes: ['Sneakers', 'Sandals', 'Boots', 'Slippers'],
+    shoes: await Promise.all(
+      ['Sneakers', 'Sandals', 'Boots', 'Slippers'].map((product) =>
+        prisma.attributeValue.create({
+          data: {
+            value: product.toLowerCase().replace('-', ''),
+            displayName: product,
+            attributeTypeId: attributeTypeMap['producttype'],
+          },
+        }),
+      ),
+    ),
+
+    // accessories: ['Watches', 'Sunglasses', 'Bags', 'Hats'],
+    accessories: await Promise.all(
+      ['Watches', 'Sunglasses', 'Bags', 'Hats'].map((product) =>
+        prisma.attributeValue.create({
+          data: {
+            value: product.toLowerCase().replace('-', ''),
+            displayName: product,
+            attributeTypeId: attributeTypeMap['producttype'],
+          },
+        }),
+      ),
+    ),
+
+    // sportswear: ['Running', 'Training', 'Yoga', 'Cycling'],
+    sportswear: await Promise.all(
+      ['Running', 'Training', 'Yoga', 'Cycling'].map((product) =>
+        prisma.attributeValue.create({
+          data: {
+            value: product.toLowerCase().replace('-', ''),
+            displayName: product,
+            attributeTypeId: attributeTypeMap['producttype'],
+          },
+        }),
+      ),
+    ),
+  };
 
   const mainValues = await Promise.all(
     // ['Men', 'Women', 'Unisex', 'Kids']
@@ -370,16 +432,35 @@ async function main() {
       data: {
         ...itemData,
         brandId: brand.id,
+        categoryId: category.id,
       },
     });
-    await prisma.itemAttributeValue.create({
-      data: {
+    console.log(
+      `ItemID: ${item.id} BrandID: ${brand.id} CategoryID: ${category.id}`,
+    );
+    await prisma.itemAttributeValue.upsert({
+      where: {
+        itemId_attributeValueId: {
+          itemId: item.id,
+          attributeValueId: brand.id,
+        },
+      },
+      update: {},
+      create: {
         itemId: item.id,
         attributeValueId: brand.id,
       },
     });
-    await prisma.itemAttributeValue.create({
-      data: {
+
+    await prisma.itemAttributeValue.upsert({
+      where: {
+        itemId_attributeValueId: {
+          itemId: item.id,
+          attributeValueId: category.id,
+        },
+      },
+      update: {},
+      create: {
         itemId: item.id,
         attributeValueId: category.id,
       },
@@ -390,6 +471,7 @@ async function main() {
     let pickedIds = [
       // brand.id,
       category.id,
+      brand.id,
     ];
 
     for (const typeId of Object.keys(attributeValueMap).map(Number)) {
@@ -403,6 +485,19 @@ async function main() {
         data: {
           itemId: item.id,
           attributeValueId: selectedValue.id,
+        },
+      });
+    }
+
+    // product type
+    const productType =
+      productTypeMap[category.value as keyof typeof productTypeMap];
+    if (productType) {
+      const product = getRandomElements(productType, 1)[0];
+      await prisma.itemAttributeValue.create({
+        data: {
+          itemId: item.id,
+          attributeValueId: product.id,
         },
       });
     }
@@ -425,7 +520,7 @@ async function main() {
   const user = await prisma.user.create({
     data: {
       email: '1',
-      password: '1', // hashed 'password123'
+      password: '1',
       name: 'Sample User',
     },
   });
@@ -435,7 +530,7 @@ async function main() {
   // create filters
   const mensId = mainValues.find((v) => v.value === 'men')?.id;
   const womensId = mainValues.find((v) => v.value === 'women')?.id;
-  const tshirtsId = categoryValues.find((v) => v.value === 'tshirts')?.id;
+  const tshirtsId = categoryValues.find((v) => v.value === 'clothing')?.id;
   if (!mensId || !tshirtsId || !womensId) {
     throw new Error('Could not find main or category attribute values');
   }

@@ -17,7 +17,6 @@ const props = defineProps<{
   }[];
 }>();
 
-const { category } = useCategory();
 
 </script>
 <template>
