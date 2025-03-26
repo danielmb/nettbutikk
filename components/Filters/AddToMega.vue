@@ -51,6 +51,8 @@ const addMegaMenu = async (
       <SelectGroup>
         <SelectItem v-for="item in megaMenuItems" :key="item.id" :value="item.id">
           {{ item.label }}
+          -
+          {{ item.column.category.navigationMenu.name }}
         </SelectItem>
       </SelectGroup>
     </SelectContent>

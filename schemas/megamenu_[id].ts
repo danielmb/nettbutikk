@@ -46,3 +46,9 @@ export const megaMenuSchema = z.object({
   isActive: z.boolean().default(true),
   categories: z.array(megaMenuCategorySchema),
 });
+
+export const megaMenuNewSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().nullish(),
+  isActive: z.boolean().default(true),
+});

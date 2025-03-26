@@ -3,7 +3,7 @@ import { prisma } from '~/lib/db';
 export default defineEventHandler(async (event) => {
   try {
     // Fetch the active navigation menu with all its related data
-    const navigationMenu = await prisma.navigationMenu.findFirst({
+    const navigationMenu = await prisma.navigationMenu.findMany({
       where: {
         isActive: true,
       },
@@ -44,12 +44,6 @@ export default defineEventHandler(async (event) => {
         },
       },
     });
-
-    if (!navigationMenu) {
-      return {
-        categories: [],
-      };
-    }
 
     return navigationMenu;
   } catch (error) {

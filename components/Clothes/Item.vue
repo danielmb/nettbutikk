@@ -9,15 +9,34 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import type { Item } from '@prisma/client'
-import type { SerializeObject } from 'nitropack';
-import type { InternalApi } from 'nitropack/types';
 const props = defineProps<{
   // item: InternalApi['/api/items']['default'][]
-  item: any
+  item: {
+    id: number;
+    name: string;
+    description: string | null;
+    price: number;
+    image: string;
+    images: { url: string }[];
+    category: {
+      id: number;
+      slug: string | null;
+    } | null;
+    brand: {
+      id: number;
+      slug: string | null;
+    } | null;
+  }
 }>();
 
-const item = ref(props.item);
+const item = ref<
+  typeof props.item & {
+    isFavorite: boolean;
+  }
+>({
+  ...props.item,
+  isFavorite: false,
+});
 
 const currency = useCurrencyStore();
 currency.setCurrency('USD');
@@ -62,15 +81,15 @@ const categoryId = route.params.categoryId;
 
 <template>
   <div class="w-full relative">
-
     <!-- <a :href="`item/${item.id}`"> -->
-    <a :href="`/category/${categoryId}/item/${item.id}`">
+    <!-- <a :href="`/category/${categoryId}/item/${item.id}`"> -->
+    <ProductData :product="item">
       <Card class="md:w-[300px] border-none rounded-none shadow-none">
         <CardContent class="flex flex-col items-center p-2 h-72 lg:p-0 group">
 
-          <img :src="item.image" :alt="item.title" class="object-cover overflow-hidden"
+          <img :src="item.image" :alt="item.name" class="object-cover overflow-hidden"
             :class="{ 'group-hover:hidden ': item.images.length > 0 }" />
-          <img v-if="item.images.length > 0" :src="item.images[0].url" :alt="item.title"
+          <img v-if="item.images.length > 0" :src="item.images[0].url" :alt="item.name"
             class="object-cover hidden group-hover:block" />
         </CardContent>
         <CardHeader>
@@ -83,7 +102,8 @@ const categoryId = route.params.categoryId;
           <Price :price="item.price" />
         </CardFooter>
       </Card>
-    </a>
+    </ProductData>
+    <!-- </a> -->
     <!-- favorite -->
     <Button class="absolute bottom-24 right-0 w-2" variant="ghost" @click="toggleFavorite(item.id)">
 

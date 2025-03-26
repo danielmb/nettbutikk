@@ -6,9 +6,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-
+const props = defineProps<{ itemId: number }>();
 const { data: item } = await useFetch(
-  `/api/items/${Number(route.params.itemId)}`,
+  `/api/items/${Number(props.itemId)}`,
 );
 const { addItem, items } = useCartStore();
 watch(
@@ -80,38 +80,28 @@ const { categoryUrl } = useCategory();
         </div>
 
         <div v-if="item.parentVariant" class="flex flex-row space-x-4">
-          <a
-            v-for="itemVariant in item.parentVariant.Items"
-            :key="itemVariant.id"
-            :href="`${categoryUrl}/item/${itemVariant.id}`"
-            class="flex flex-col items-center space-y-2"
-            :class="{ 'border-b-2 border-black': itemVariant.id === item.id }"
-          >
+          <a v-for="itemVariant in item.parentVariant.Items" :key="itemVariant.id"
+            :href="`${categoryUrl}/item/${itemVariant.id}`" class="flex flex-col items-center space-y-2"
+            :class="{ 'border-b-2 border-black': itemVariant.id === item.id }">
             <img :src="itemVariant.image" class="w-12 h-20 object-cover" />
             <span>{{ itemVariant.name }}</span>
           </a>
         </div>
 
-        <Button
-          @click="
-            addItem({
-              id: item.id,
-              name: item.name,
-              price: item.price,
-              quantity: 1,
-              thumbnail: item.image,
-              color: color?.attributeValue.displayName,
-              size: size?.attributeValue.displayName,
-            })
-          "
-          >Add to Cart</Button
-        >
+        <Button @click="
+          addItem({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: 1,
+            thumbnail: item.image,
+            color: color?.attributeValue.displayName,
+            size: size?.attributeValue.displayName,
+          })
+          ">Add to Cart</Button>
         <div>
           <Accordion type="single" class="w-full" collapsible>
-            <AccordionItem
-              v-if="item.description"
-              :value="item.description ?? ''"
-            >
+            <AccordionItem v-if="item.description" :value="item.description ?? ''">
               <AccordionTrigger> Product Details </AccordionTrigger>
               <AccordionContent>
                 {{ item.description }}
@@ -119,10 +109,7 @@ const { categoryUrl } = useCategory();
             </AccordionItem>
           </Accordion>
           <Accordion type="single" class="w-full" collapsible>
-            <AccordionItem
-              v-if="brand?.attributeValue.description"
-              :value="brand?.attributeValue.description ?? ''"
-            >
+            <AccordionItem v-if="brand?.attributeValue.description" :value="brand?.attributeValue.description ?? ''">
               <AccordionTrigger> Brand </AccordionTrigger>
               <AccordionContent>
                 {{ brand?.attributeValue.description }}

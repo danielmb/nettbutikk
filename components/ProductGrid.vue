@@ -6,6 +6,14 @@ const props = defineProps<{
     id: number;
     image: string;
     name: string;
+    category: {
+      id: number;
+      slug: string | null;
+    } | null;
+    brand: {
+      id: number;
+      slug: string | null;
+    } | null;
   }[];
 }>();
 
@@ -14,8 +22,11 @@ const { category } = useCategory();
 </script>
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-    <a v-for="{ id, image, name } in products" :key="id" class="flex flex-col w-full p-2 relative"
-      :href="`/category/${category}/item/${id}`">
+    <!-- <a v-for="{ id, image, name, brand, category } in products" :key="id" class="flex flex-col w-full p-2 relative" -->
+
+    <!-- :href="`/category/${category}/item/${id}`"> -->
+    <ProductData v-for="{ id, image, name, brand, category } in products" :key="id"
+      :product="{ id, name, brand, category }">
       <div class="flex flex-col">
         <img :src="image" alt="product" class="h-52 md:h-96 object-cover" />
         <div
@@ -23,6 +34,6 @@ const { category } = useCategory();
           <span class="">{{ name }}</span>
         </div>
       </div>
-    </a>
+    </ProductData>
   </div>
 </template>

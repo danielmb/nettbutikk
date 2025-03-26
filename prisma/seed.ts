@@ -342,7 +342,7 @@ async function main() {
 
   // Create all attribute values map for easier access
   const allAttributeValues = [
-    ...brandValues,
+    // ...brandValues,
     ...sizeValues,
     ...colorValues,
     ...styleValues,
@@ -364,16 +364,39 @@ async function main() {
   const items = [];
   for (const itemData of itemsData) {
     // Create the item
+    const brand = getRandomElements(brandValues, 1)[0];
+    const category = getRandomElements(categoryValues, 1)[0];
     const item = await prisma.item.create({
       data: {
         ...itemData,
+        brandId: brand.id,
+      },
+    });
+    await prisma.itemAttributeValue.create({
+      data: {
+        itemId: item.id,
+        attributeValueId: brand.id,
+      },
+    });
+    await prisma.itemAttributeValue.create({
+      data: {
+        itemId: item.id,
+        attributeValueId: category.id,
       },
     });
 
     // Assign attributes to the item
     // Each item needs one value from each attribute type
+    let pickedIds = [
+      // brand.id,
+      category.id,
+    ];
+
     for (const typeId of Object.keys(attributeValueMap).map(Number)) {
-      const possibleValues = attributeValueMap[typeId];
+      const possibleValues = attributeValueMap[typeId].filter((v) => {
+        return !pickedIds.includes(v.id);
+      });
+
       const selectedValue = getRandomElements(possibleValues, 1)[0];
 
       await prisma.itemAttributeValue.create({

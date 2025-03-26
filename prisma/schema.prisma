@@ -31,9 +31,17 @@ model Item {
   price       Float
   image       String // main image
   images      Image[]
+  
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   users       User[]
+
+  // All the single relations
+  brand         AttributeValue? @relation("brand", fields: [brandId], references: [id])
+  brandId       Int?
+
+  category      AttributeValue? @relation("category", fields: [categoryId], references: [id]) // main category
+  categoryId    Int?
 
   // Eav model
   attributes ItemAttributeValue[]
@@ -83,7 +91,11 @@ model AttributeValue {
   items           ItemAttributeValue[]
   Filters         Filters[]
 
-    menuItems       NavigationItem[]     // Add this relation
+  menuItems       NavigationItem[]   
+
+  
+  brandToItems    Item[]               @relation("brand")
+  categoryToItems Item[]               @relation("category")
 
 }
 

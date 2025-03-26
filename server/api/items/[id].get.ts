@@ -5,11 +5,12 @@ import gemini from '~/lib/ai';
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params!.id;
-  console.log(event.context.params);
   const item = await prisma.item.findUnique({
     where: { id: Number(id) },
     include: {
       images: true,
+      brand: true,
+      category: true,
       attributes: {
         include: {
           attributeValue: {
@@ -48,7 +49,6 @@ Let's talk outfit inspo with our edit of men's bestselling clothing. For that ma
 
 I want a description for the brand ${brand.attributeValue.displayName}`,
     );
-    console.log(response);
     const res = response?.response.text();
     if (res) {
       brand.attributeValue.description = res ?? null;

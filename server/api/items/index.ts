@@ -87,6 +87,8 @@ export default defineEventHandler(async (event) => {
       images: {
         take: 1,
       },
+      brand: true,
+      category: true,
       attributes: {
         include: {
           attributeValue: {

@@ -6,5 +6,4 @@ const { addItem } = useCartStore();
 </script>
 
 <template>
-  <Item />
 </template>

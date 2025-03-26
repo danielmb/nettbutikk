@@ -6,6 +6,14 @@ const props = defineProps<{
     id: number;
     image: string;
     name: string;
+    category: {
+      id: number;
+      slug: string | null;
+    } | null;
+    brand: {
+      id: number;
+      slug: string | null;
+    } | null;
   }[];
 }>();
 import { Card, CardContent } from '@/components/ui/card'
@@ -46,21 +54,20 @@ onMounted(() => {
       loop: true,
       dragFree: true,
       startIndex: 0,
-
     }">
       <!-- Add a on hover -->
       <CarouselContent :onmouseover="setHovered(true)" :onmouseout="setHovered(false)">
-        <CarouselItem v-for="{ id, image, name } in products.slice(0, 10)" :key="id" class="md:basis-1/2 lg:basis-1/6 ">
-          <a class="flex flex-col p-2 relative" :href="`/category/${category}/item/${id}`">
+        <CarouselItem v-for="{ id, image, name, category, brand } in products.slice(0, 10)" :key="id"
+          class="md:basis-1/2 lg:basis-1/6 ">
+          <ProductData class="flex flex-col p-2 relative" :product="{ id, category, brand, name }">
             <div class="flex flex-col">
               <img :src="image" alt="product" class="h-52 md:h-96 object-cover" />
-              <!-- put a gradient black to transparent overlay on top of the image -->
               <div
                 class="text-center font-bold absolute bottom-0 h-12 w-full bg-gradient-to-t from-black to-transparent text-white">
                 <span class="">{{ name }}</span>
               </div>
             </div>
-          </a>
+          </ProductData>
         </CarouselItem>
       </CarouselContent>
 

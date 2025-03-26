@@ -24,7 +24,7 @@ const { products: newArrivals } = await useProducts({
   staticFilters: mainFilter.value ?? {
   },
 });
-
+// newArrivals.value[0].category.slug
 const { data: tShirtsFilter } = await useFetch('/api/filter/readable', {
   query: {
     filters: {
