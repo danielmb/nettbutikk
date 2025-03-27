@@ -48,14 +48,15 @@ onMounted(() => {
 </script>
 <template>
   <!-- class="flex flex-col w-1/4 p-2 relative" :href="`/category/${category}/item/${id}`"> -->
-  <div class="flex flex-row w-full">
-    <Carousel class="relative w-full" v-bind:plugins="plugins" :opts="{
+  <div class="flex flex-row" style="width: calc(100% - 20px); height: 100%; position: relative;">
+    <Carousel class="w-fit px-10" v-bind:plugins="plugins" :opts="{
       align: 'start',
       loop: true,
       dragFree: true,
       startIndex: 0,
     }">
       <!-- Add a on hover -->
+
       <CarouselContent :onmouseover="setHovered(true)" :onmouseout="setHovered(false)">
         <CarouselItem v-for="{ id, image, name, category, brand } in products.slice(0, 10)" :key="id"
           class="md:basis-1/2 lg:basis-1/6 ">
@@ -70,6 +71,8 @@ onMounted(() => {
           </ProductData>
         </CarouselItem>
       </CarouselContent>
+      <CarouselPrevious class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10  p-2 rounded-full" />
+      <CarouselNext class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10  p-2 rounded-full" />
 
     </Carousel>
   </div>

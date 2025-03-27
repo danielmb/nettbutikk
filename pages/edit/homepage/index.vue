@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { AutoForm } from '~/components/ui/auto-form';
-import { homemenuPostSchema } from '~/schemas/homemenu_post';
+import { homemenuPostSchema } from '~/schemas/homemenu';
 import { Button } from '~/components/ui/button';
 
 const { data: homeMenus } = await useFetch('/api/homepage');

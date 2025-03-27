@@ -24,5 +24,7 @@ const items = ref([
     </div>
 
     <slot />
+
+    <AppFooter />
   </div>
 </template>

@@ -20,3 +20,11 @@ export function valueUpdater<T extends Updater<any>>(
 export function urlFriendly(str: string) {
   return str.toLowerCase().replace(/[^a-z0-9]/g, '-');
 }
+
+export const returnNumberIfValid = (id: string) => {
+  const idNumber = Number(id);
+  if (isNaN(idNumber)) {
+    return id;
+  }
+  return idNumber;
+};

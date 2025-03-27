@@ -1,17 +1,24 @@
 import { prisma } from '@/lib/db';
-import { homeMenuSectionPostSchema } from '~/schemas/homemenu';
+import { homeMenuSectionPatchSchema } from '~/schemas/homemenu';
 export default defineEventHandler(async (event) => {
   try {
     const data = await readValidatedBody(event, (body) =>
-      homeMenuSectionPostSchema.parse(body),
+      homeMenuSectionPatchSchema.parse(body),
     );
+    const { id } = event.context.params!;
+    const sectionId = parseInt(id);
 
     const res = await prisma.$transaction(async (tx) => {
-      const updatedItem = await tx.homePageSection.create({
+      const updatedItem = await tx.homePageSection.update({
+        where: {
+          id: sectionId,
+        },
         data: {
           name: data.name,
           homePageId: data.homePageId,
           description: data.description,
+          filterId: data.filterId,
+          variant: data.variant,
         },
       });
       return updatedItem;

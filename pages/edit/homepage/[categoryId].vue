@@ -1,16 +1,30 @@
 <script lang="ts" setup>
-import type { HomeMenuSectionPost } from '~/schemas/homemenu_post';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+
+} from '~/components/ui/select';
+import type { HomeMenuSectionPost } from '~/schemas/homemenu';
 import { Button } from '~/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader, CardDescription, CardFooter, CardTitle
 } from '~/components/ui/card';
+import { Accordion, AccordionContent, AccordionTrigger } from '~/components/ui/accordion';
 const route = useRoute();
 const { categoryId } = route.params;
 // const { data: homepage } = await useFetch(`/api/homepage/${categoryId}`);
 const { data: homepage } = useQuery({
-  queryFn: () => $fetch(`/api/homepage/${categoryId}`),
+  // @ts-ignore Excessive stack depth ...
+  queryFn: () => $fetch(`/api/homepage/${categoryId}`, {
+    query: {
+      takeSection: 6,
+    },
+  }),
   enabled: !!categoryId,
   queryKey: ['homepage', categoryId],
 })
@@ -34,10 +48,14 @@ const { mutateAsync: addSection } = useMutation({
     });
     return { previousData };
   },
-  onMutate: async (data) => {
-
-  },
 });
+
+const { data: filters } = useQuery({
+  // @ts-ignore Excessive stack depth ...
+  queryFn: () => $fetch('/api/filters'),
+  queryKey: ['filters'],
+})
+
 
 </script>
 
@@ -57,27 +75,10 @@ const { mutateAsync: addSection } = useMutation({
             Sections
           </h2>
           <div>
-            <div v-for="section in homepage?.homePageSections" :key="section.id">
-              <Card>
-                <CardHeader>
-                  <CardTitle>
-                    {{ section.name }}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>
-                    <div>
-                      <h3>
-                        Products
-                      </h3>
-                      <div>
-
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+            <Accordion :unmount-on-hide="false">
+              <HomepageEditorSection :filters="filters ?? []" :section="section"
+                v-for="section in homepage?.homePageSections" :key="section.id" />
+            </Accordion>
           </div>
           <div v-if="homepage">
             <Button @click="addSection({ homePageId: homepage?.id, name: 'New Section' })">

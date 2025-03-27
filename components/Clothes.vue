@@ -22,13 +22,14 @@ import { ChevronDown } from 'lucide-vue-next';
 
 const props = defineProps<{
   defaultFilters?: UseProductsOptions['staticFilters'] | undefined;
+  filterId?: number;
 }>();
 const route = useRoute();
 
-const filterId = route.query.filterId as string;
-const { data: filter } = await useFetch(`/api/filter/id/${filterId}`);
-const { products, filters, loading, setFilter, removeFilter, activeFilters } =
+const { data: filter } = await useFetch(`/api/filter/id/${props.filterId}`);
+const { products, filters, loading, setFilter, removeFilter, activeFilters, } =
   await useProducts({
+    filterId: props.filterId,
     staticFilters: props.defaultFilters,
   });
 

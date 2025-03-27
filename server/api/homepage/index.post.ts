@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/db';
-import { homemenuPostSchema } from '~/schemas/homemenu_post';
+import { homemenuPostSchema } from '~/schemas/homemenu';
 export default defineEventHandler(async (event) => {
   try {
     const data = await readValidatedBody(event, (body) =>

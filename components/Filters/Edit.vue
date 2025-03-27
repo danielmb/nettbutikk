@@ -151,9 +151,9 @@ watch(
     "
   /> -->
 
-  <div>
+  <div class="flex  max-w-full ">
     <div>
-      <form class="w-2/3 space-y-6" @submit="onSubmit">
+      <form class=" w-2/3 space-y-6" @submit="onSubmit">
         <div>
           <FormField v-slot="{ componentField }" name="name" :validate-on-blur="!isFieldDirty">
             <FormItem>
@@ -193,7 +193,7 @@ watch(
             <FormItem>
               <FormLabel>Set filters</FormLabel>
               <FormControl>
-                <div class="flex flex-row space-x-4 overflow-x-auto p-4">
+                <div class="flex flex-row space-x-4 overflow-x-auto p-4 max-w-2xl">
                   <div v-for="filter in filters" :key="filter.id">
                     <ClothesAttributeType :filter="filter"
                       :initialValues="fieldArrayToNumberArray(field.value ?? [], filter.slug)"

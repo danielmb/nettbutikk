@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import type { UseProductsOptions } from '~/composables/useProducts';
 import type { ReadableFilterInput } from '~/server/api/filter/readable.get';
+import { urlFriendly } from '~/lib/utils';
 const items = ref([
   { label: 'New Arrivals' },
   { label: 'Clothing' },
@@ -28,8 +29,6 @@ const { products: newArrivals } = await useProducts({
 
 
 
-const { data: filters } = await useFetch('/api/filters');
-const { data: homePage } = await useFetch('/api/homepage/men');
 </script>
 <template>
 
@@ -69,11 +68,11 @@ const { data: homePage } = await useFetch('/api/homepage/men');
 
     <!-- </div> -->
 
-    <div class="flex flex-col">
+    <!-- <div class="flex flex-col">
       <div v-for="section in homePage?.homePageSections ?? []">
-        {{ section.name }}
       </div>
-    </div>
-
+      
+    </div> -->
+    <Homepage home-page-id="men" />
   </div>
 </template>

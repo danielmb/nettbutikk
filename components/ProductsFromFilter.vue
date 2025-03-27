@@ -5,11 +5,16 @@ import ProductCarousel from './ProductCarousel.vue';
 const props = defineProps<{
   filterId: number;
   variant: 'grid' | 'carousel';
+  max?: number;
+  initalPagination?: UseProductsOptions['initialPagination'];
 }>();
 
 const { data: filter } = await useFetch(`/api/filters/${props.filterId}`);
 const { products, filters, loading, setFilter, removeFilter, activeFilters } =
-  await useProducts();
+  useProducts({
+    filterId: props.filterId,
+    initialPagination: props.initalPagination,
+  });
 
 // Define slot props type
 const slotProps = {
@@ -31,8 +36,9 @@ defineSlots<{
 <template>
   <slot name="before" v-bind="slotProps" />
 
-  <ProductGrid :products="products" v-if="variant === 'grid'" />
-  <ProductCarousel :products="products" v-else-if="variant === 'carousel'" />
+  <ProductGrid :products="products.slice(0, props.max)" v-if="variant === 'grid'" :max="props.max" />
+  <ProductCarousel :products="products
+    .slice(0, props.max)" v-else-if="variant === 'carousel'" />
 
   <slot name="after" v-bind="slotProps" />
 </template>

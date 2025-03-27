@@ -4,12 +4,21 @@ import { useQuery, keepPreviousData } from '@tanstack/vue-query';
 export interface UseProductsOptions {
   staticFilters?: Record<string, number[]>;
   noUrl?: boolean;
+  filterId?: number;
+  initialPagination?: {
+    page: number;
+    limit: number;
+    total?: number;
+    pages?: number;
+  };
 }
 
 export const useProducts = (
   options: UseProductsOptions = {
     staticFilters: {},
     noUrl: false,
+    filterId: undefined,
+    initialPagination: { page: 1, limit: 20, total: 0, pages: 0 },
   },
 ) => {
   const route = useRoute();
@@ -21,18 +30,15 @@ export const useProducts = (
     ...options.staticFilters,
   });
 
-  const pagination = ref({
-    page: 1,
-    limit: 20,
-    total: 0,
-    pages: 0,
-  });
+  const pagination = ref(
+    options.initialPagination ?? { page: 1, limit: 20, total: 0, pages: 0 },
+  );
 
   const search = ref('');
 
   // Function to fetch filters
   const fetchFilters = async () => {
-    const filterId = route.query.filterId;
+    const filterId = options.filterId;
     return await $fetch('/api/items/filters', {
       params: { filterId },
     });
@@ -40,7 +46,7 @@ export const useProducts = (
 
   // Function to fetch products
   const fetchProducts = async () => {
-    const filterId = route.query.filterId;
+    const filterId = options.filterId;
     const response = await $fetch('/api/items', {
       params: {
         defaultFilterId: filterId,
@@ -64,7 +70,7 @@ export const useProducts = (
 
   // Filters query
   const filtersQuery = useQuery({
-    queryKey: ['filters', route.query.filterId],
+    queryKey: ['filters', options.filterId],
     queryFn: fetchFilters,
   });
 
@@ -72,7 +78,7 @@ export const useProducts = (
   const productsQuery = useQuery({
     queryKey: [
       'products',
-      route.query.filterId,
+      options.filterId,
       activeFilters.value,
       pagination.value.page,
       search.value,
@@ -117,7 +123,7 @@ export const useProducts = (
 
     // Invalidate and refetch products query
     queryClient.invalidateQueries({
-      queryKey: ['products', route.query.filterId],
+      queryKey: ['products', options.filterId],
     });
   };
 
@@ -130,7 +136,7 @@ export const useProducts = (
 
     // Invalidate and refetch products query
     queryClient.invalidateQueries({
-      queryKey: ['products', route.query.filterId],
+      queryKey: ['products', options.filterId],
     });
   };
 
@@ -141,7 +147,7 @@ export const useProducts = (
 
     // Invalidate and refetch products query
     queryClient.invalidateQueries({
-      queryKey: ['products', route.query.filterId],
+      queryKey: ['products', options.filterId],
     });
   };
 
@@ -162,7 +168,7 @@ export const useProducts = (
 
     // Invalidate and refetch products query when search changes
     queryClient.invalidateQueries({
-      queryKey: ['products', route.query.filterId],
+      queryKey: ['products', options.filterId],
     });
   };
 
