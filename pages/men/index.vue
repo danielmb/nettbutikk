@@ -46,33 +46,7 @@ const { products: newArrivals } = await useProducts({
         </span>
       </div>
     </div>
-    <!-- <div class="w-full flex flex-col align-middle items-center">
-      <h2 class="text-2xl font-bold text-center">
-        New Arrivals
-      </h2>
-      <div class="w-full flex flex-wrap justify-center items-center">
-        <ProductGrid :products="newArrivals.slice(0, 6)" />
-      </div>
-      <a href="/category/men/" class="text-lg font-bold ">
-        <Button variant="link">View all new arrivals</Button>
-      </a>
-    </div>
-    <div class="w-full flex flex-col align-middle items-center"> -->
 
-    <!-- <div class="w-full flex flex-wrap justify-center items-center">
-        <ProductCarousel :products="tShirts" />
-      </div>
-      <a :href="`/category/${tShirtsFilter?.category[0]}`" class="text-lg font-bold ">
-        <Button variant="link">View all t-shirts</Button>
-      </a> -->
-
-    <!-- </div> -->
-
-    <!-- <div class="flex flex-col">
-      <div v-for="section in homePage?.homePageSections ?? []">
-      </div>
-      
-    </div> -->
     <Homepage home-page-id="men" />
   </div>
 </template>

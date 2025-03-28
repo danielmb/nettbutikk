@@ -37,18 +37,12 @@ const plugins = ref([
   })]
 );
 
-onMounted(() => {
-  // setTimeout(() => {
-  //   plugins.value[0].setOptions({
-  //     delay: 5000,
-  //   });
-  // }, 5000);
-});
 
 </script>
 <template>
   <!-- class="flex flex-col w-1/4 p-2 relative" :href="`/category/${category}/item/${id}`"> -->
-  <div class="flex flex-row" style="width: calc(100% - 20px); height: 100%; position: relative;">
+  <div v-if="products.length > 0" class="flex flex-row"
+    style="width: calc(100% - 20px); height: 100%; position: relative;">
     <Carousel class="w-fit px-10" v-bind:plugins="plugins" :opts="{
       align: 'start',
       loop: true,

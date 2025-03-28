@@ -123,11 +123,16 @@ model Filters {
   description String?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
+
+  // for sorting like price, name, etc
+  sort       String? // e.g., 'price-asc', 'name-desc'
   values      AttributeValue[]
   menuItems   NavigationItem[] // Add this relation
-
   HomePageSection HomePageSection[]
 }
+
+
+
 
 model NavigationMenu {
   id          Int                  @id @default(autoincrement())

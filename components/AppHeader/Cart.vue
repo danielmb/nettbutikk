@@ -38,13 +38,13 @@ watch(items, (newItems) => {
           <div v-for="item in items" :key="item.id" class="flex flex-row justify-between last:border-b-0 border-b-2">
 
             <!-- Image -->
-            <a :href="`/item/${item.id}`" class="w-1/3 h-32 p-1">
+            <NuxtLink :to="`/item/${item.id}`" class="w-1/3 h-32 p-1">
               <img :src="item.thumbnail" alt="item" class="w-full h-full  object-cover" />
-            </a>
+            </NuxtLink>
             <!-- Name -->
 
             <div class="flex flex-col w-2/3 px-2 justify-between">
-              <a :href="`/item/${item.id}`" class="flex flex-col justify-between h-fit">
+              <NuxtLink :to="`/item/${item.id}`" class="flex flex-col justify-between h-fit">
 
                 <span>{{ formattedAmount(item.price) }}</span>
                 <span>{{ item.name }}</span>
@@ -53,7 +53,7 @@ watch(items, (newItems) => {
                   <p>{{ item.size ?? 'No Size' }}</p>
                   <p>Qty: {{ item.quantity }}</p>
                 </div>
-              </a>
+              </NuxtLink>
 
               <div class="flex flex-row justify-end">
                 <Button @click="item.quantity > 1 ? updateQuantity(item.id, item.quantity - 1) : removeItem(item.id)"

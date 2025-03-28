@@ -16,9 +16,9 @@ async function onSubmit(values: Record<string, any>) {
   <div class="px-52 py-5">
     <div class="flex flex-col space-y-2">
       <Button v-for="menu in homeMenus" :key="menu.id" variant="link" type="button" as-child>
-        <a :href="`/edit/homepage/${menu.id}`">
+        <NuxtLink :to="`/edit/homepage/${menu.id}`">
           {{ menu.name }}
-        </a>
+        </NuxtLink>
       </Button>
     </div>
     <AutoForm :schema="homemenuPostSchema" @submit="onSubmit">

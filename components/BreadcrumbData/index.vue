@@ -60,7 +60,9 @@ const data = computed(() => {
       <template v-for="crumb in data.crumbs" :key="crumb.label">
         <BreadcrumbItem>
           <BreadcrumbLink :href="crumb.route" class="capitalize">
-            {{ crumb.label }}
+            <NuxtLink :to="crumb.route">
+              {{ crumb.label }}
+            </NuxtLink>
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator v-if="data.crumbs.length > 0" />

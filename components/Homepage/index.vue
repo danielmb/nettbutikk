@@ -22,11 +22,11 @@ const { data: homePage } = await useFetch(`/api/homepage/${props.homePageId}`);
         :initalPagination="section.variant === 'grid' ? { limit: 6, page: 1 } : undefined"
         :variant="section.variant === 'carousel' ? 'carousel' : 'grid'""/> 
       </div>
-      <a v-if="section.filterId"
-        :href="`/men/ctfr/${urlFriendly(section.filter!.name)}/cat?filterId=${section.filterId}`"
+      <NuxtLink v-if="section.filterId"
+        :to="`/men/ctfr/${urlFriendly(section.filter!.name)}/cat?filterId=${section.filterId}`"
         class="text-lg font-bold ">
         <Button variant="link">View all {{ section.name }}</Button>
-        </a>
+        </NuxtLink>
     </div>
 
 </template>

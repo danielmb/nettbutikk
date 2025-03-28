@@ -80,12 +80,12 @@ const { categoryUrl } = useCategory();
         </div>
 
         <div v-if="item.parentVariant" class="flex flex-row space-x-4">
-          <a v-for="itemVariant in item.parentVariant.Items" :key="itemVariant.id"
-            :href="`${categoryUrl}/item/${itemVariant.id}`" class="flex flex-col items-center space-y-2"
+          <NuxtLink v-for="itemVariant in item.parentVariant.Items" :key="itemVariant.id"
+            :to="`${categoryUrl}/item/${itemVariant.id}`" class="flex flex-col items-center space-y-2"
             :class="{ 'border-b-2 border-black': itemVariant.id === item.id }">
             <img :src="itemVariant.image" class="w-12 h-20 object-cover" />
             <span>{{ itemVariant.name }}</span>
-          </a>
+          </NuxtLink>
         </div>
 
         <Button @click="

@@ -56,7 +56,7 @@ const items = computed(() => props.items);
                       <strong class="block">{{ subSubItem.label }}</strong>
                       <ul v-if="subSubItem.variant === 'grid'" class="grid grid-cols-2 gap-3">
                         <li v-for="subSubSubItem in subSubItem.items" :key="subSubSubItem.label">
-                          <a :href="subSubSubItem.route"
+                          <NuxtLink :to="subSubSubItem.route"
                             class="flex flex-row items-center gap-2 p-4 hover:bg-none hover:shadow-lg rounded-md relative">
                             <div
                               class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 hover:border transition-all duration-200">
@@ -64,25 +64,25 @@ const items = computed(() => props.items);
                                 class="w-16 hover:absolute hover:w-24 hover:-left-2" alt="" />
                             </div>
                             <span class="self-center">{{ subSubSubItem.label }}</span>
-                          </a>
+                          </NuxtLink>
                         </li>
                       </ul>
                       <ul v-else>
                         <li v-for="subSubSubItem in subSubItem.items" :key="subSubSubItem.label">
                         <li v-if="subSubSubItem.type === 'rounded'">
-                          <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
+                          <NuxtLink :to="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
                             <div
                               class="w-16 h-16 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0">
                               <img v-if="subSubSubItem.image" :src="subSubSubItem.image" class="w-full hover:absolute"
                                 alt="" />
                             </div>
                             <span class="self-center">{{ subSubSubItem.label }}</span>
-                          </a>
+                          </NuxtLink>
                         </li>
                         <li v-else>
-                          <a :href="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
+                          <NuxtLink :to="subSubSubItem.route" class="flex flex-row items-center gap-2 hover:bg-none">
                             <span class="self-center">{{ subSubSubItem.label }}</span>
-                          </a>
+                          </NuxtLink>
                         </li>
                     </li>
                   </ul>

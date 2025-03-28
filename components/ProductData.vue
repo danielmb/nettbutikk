@@ -1,10 +1,10 @@
 <!-- components/Product.vue -->
 <template>
-  <a :href="`/${product.brand?.slug ?? product.brand?.id}/${urlFriendly(product.name)}/prd/${productId}`">
+  <NuxtLink :href="`/${product.brand?.slug ?? product.brand?.id}/${urlFriendly(product.name)}/prd/${productId}`">
     <slot>
       {{ productId }}
     </slot>
-  </a>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">

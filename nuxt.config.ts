@@ -49,4 +49,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     authSecret: process.env.AUTH_SECRET,
   },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
 });

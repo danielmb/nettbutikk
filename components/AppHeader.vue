@@ -77,9 +77,9 @@ const mainCategory = computed(() => {
               <div v-for="{ label, route } in mainCategory" :key="label"
                 class="text-2xl  uppercase rounded-none h-full">
                 <Button>
-                  <a :href="route">
+                  <NuxtLink :to="route">
                     {{ label }}
-                  </a>
+                  </NuxtLink>
                 </Button>
               </div>
             </div>
@@ -87,10 +87,10 @@ const mainCategory = computed(() => {
         </Sheet>
       </div>
       <div class="flex items-center gap-4 border-r-0 lg:border-r border-zinc-600 pr-4 w-40">
-        <a href="/" class="flex items-center gap-2">
+        <NuxtLink to="/" class="flex items-center gap-2">
           <img src="https://www.radix-vue.com/logo.svg" alt="Radix UI" class="h-8 w-8" />
           <span class="text-xl font-bold w-52 hidden md:block">Nettbutikk</span>
-        </a>
+        </NuxtLink>
       </div>
       <div class="flex items-center gap-4 justify-between w-full">
         <NavigationMenu class="hidden lg:flex">
@@ -99,8 +99,10 @@ const mainCategory = computed(() => {
               class="p-4 text-2xl hover:bg-primary uppercase rounded-none h-full" :class="{
                 'bg-primary text-white': currentPage === route || isActive,
               }">
-              <NavigationMenuLink v-if="route" :href="route">
-                {{ label }}
+              <NavigationMenuLink v-if="route" :href="route" as-child>
+                <NuxtLink :to="route">
+                  {{ label }}
+                </NuxtLink>
               </NavigationMenuLink>
             </NavigationMenuItem>
           </NavigationMenuList>

@@ -16,14 +16,16 @@ const items = ref([
 
 </script>
 <template>
-  <div>
-    <AppHeader />
-    <UserMegaDB subCategory="subCategory" :items="items" />
-    <div class="px-52">
-      <BreadcrumbData />
-    </div>
+  <div class="flex flex-col min-h-screen justify-between">
+    <div>
 
-    <slot />
+      <AppHeader />
+      <UserMegaDB subCategory="subCategory" :items="items" />
+      <div class="px-52">
+        <BreadcrumbData />
+      </div>
+      <slot />
+    </div>
 
     <AppFooter />
   </div>
