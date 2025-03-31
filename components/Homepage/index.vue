@@ -11,6 +11,13 @@ const { data: homePage } = await useFetch(`/api/homepage/${props.homePageId}`);
 </script>
 
 <template>
+  <div v-if="!homePage">
+    No homepage found,
+    <NuxtLink to="/edit/homepage" class="text-lg font-bold ">
+      <Button variant="link">Click here to create one</Button>
+    </NuxtLink>
+    And add the name: {{ props.homePageId }}
+  </div>
   <div class="w-full flex flex-col align-middle items-center" v-for="section in homePage?.homePageSections ?? []"
     :key="section.id">
     <!-- <template v-if="section.filterId"> -->
