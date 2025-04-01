@@ -54,37 +54,7 @@ const mainCategory = computed(() => {
   <header class="flex items-center justify-between p-0 bg-zinc-800 text-white">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex-row flex gap-4 ">
       <div class="block lg:hidden">
-        <Sheet>
-          <SheetTrigger as-child>
-            <Button class="p-4">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <!-- For screen readers -->
-            <SheetHeader class="hidden">
-              <SheetTitle>
-                Menu
-              </SheetTitle>
-              <SheetDescription>
-                Main menu
-              </SheetDescription>
-            </SheetHeader>
-            <div class="flex flex-wrap gap-x-2">
-              <div v-for="{ label, route } in mainCategory" :key="label"
-                class="text-2xl  uppercase rounded-none h-full">
-                <Button>
-                  <NuxtLink :to="route">
-                    {{ label }}
-                  </NuxtLink>
-                </Button>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+        <AppHeaderMobile />
       </div>
       <div class="flex items-center gap-4 border-r-0 lg:border-r border-zinc-600 pr-4 w-40">
         <NuxtLink to="/" class="flex items-center gap-2">
