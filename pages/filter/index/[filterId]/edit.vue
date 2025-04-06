@@ -16,12 +16,12 @@ const updateOpen = (val: boolean) => {
   }
 };
 
-const open = ref(true);
+const open = ref(false);
 
 </script>
 
 <template>
-  <Dialog defaultOpen v-model:open="open" v-on:update:open="updateOpen">
+  <Dialog v-model:open="open" v-on:update:open="updateOpen">
     <DialogContent>
       <DialogTitle>Edit Filter</DialogTitle>
       <DialogDescription> Edit your filter </DialogDescription>

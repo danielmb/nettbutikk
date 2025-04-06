@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
     });
     return res;
   } catch (error) {
+    //
     if (error instanceof Error) {
       throw createError({
         ...error,
